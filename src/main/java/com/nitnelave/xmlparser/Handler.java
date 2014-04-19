@@ -54,8 +54,13 @@ class Handler extends DefaultHandler
         {
             String v = attributes.getValue(property.getPropertyName());
             if (v == null)
-                throw new SAXException();
-            Reflect.setString(peek(), property.getName(), property.getValueType(), v);
+            {
+                if (!property.isOptional())
+                    throw new SAXException(String.format("XMLNode %s is missing required property %s",
+                                                         node.getName(), property.getName()));
+            }
+            else
+                Reflect.setString(peek(), property.getName(), property.getValueType(), v);
         }
     }
 

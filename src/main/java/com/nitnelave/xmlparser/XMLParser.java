@@ -36,8 +36,8 @@ import java.util.Collection;
  * <pre>
  *     // Note: Here, Person is the root node, as it has None as parentNode
  *     &#64;XMLNode(name = "Person", parentNode = com.nitnelave.xmlparser.RootNode)
- *     &#64;XMLProperties({&#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class),
- *                      &#64;XMLProperty(name = "Name", key = "name", valueType = String.class)})
+ *     &#64;XMLProperties({&#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class, required = true),
+ *                      &#64;XMLProperty(name = "Name", key = "name", valueType = String.class, required = true)})
  *     public class Person
  *     {
  *         Collection&lt;Child&gt; children;
@@ -89,6 +89,8 @@ import java.util.Collection;
  * <li>the default node, defined by a parentNode = DefaultNode.class. If an unknown XML tag is recognized,
  * a default node is created.</li>
  * </ul>
+ * Furthermore, if a node is missing a property marked required, any xml corresponding XML tag missing the property
+ * will raise an exception upon parsing.
  * <h3>Restrictions</h3>
  * <ul>
  * <li>There has to be one, and only one root node defined.</li>

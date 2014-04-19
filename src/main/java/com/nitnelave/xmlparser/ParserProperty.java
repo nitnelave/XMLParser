@@ -8,6 +8,7 @@ class ParserProperty
     private final String name;
     private final String propertyName;
     private final Class<?> valueType;
+    private final boolean isOptional;
 
     public ParserProperty(XMLProperty property)
     throws XMLStructureException
@@ -15,6 +16,7 @@ class ParserProperty
         name = property.name();
         propertyName = property.key();
         valueType = property.valueType();
+        isOptional = !property.required();
         if (!Reflect.hasStringConstructor(valueType))
         {
             throw new XMLStructureException(
@@ -37,5 +39,10 @@ class ParserProperty
     public Class<?> getValueType()
     {
         return valueType;
+    }
+
+    public boolean isOptional()
+    {
+        return isOptional;
     }
 }

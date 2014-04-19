@@ -42,4 +42,11 @@ public @interface XMLProperty
      * @return The data class.
      */
     public Class<?> valueType();
+
+    /**
+     * Property required flag.
+     * If true, then a node missing this property will raise an exception.
+     * @return Whether this property is required.
+     */
+    public boolean required() default false;
 }
