@@ -25,18 +25,17 @@ import java.util.Collection;
  * <h3>Example use</h3>
  * We want to parse the following type of XML file:
  * <br/>
- * <p/>
+ * <p>
  * &lt;Person age="3" name="John"&gt;<br/>
- * &lt;Child&gt;Eric&lt;/Child&gt;<br/>
+ * &lt;Child age="2"&gt;Eric&lt;/Child&gt;<br/>
  * &lt;Child&gt;Paul&lt;/Child&gt;<br/>
  * &lt;/Person&gt;<br/>
  * </p>
  * <p/>
- * <p>
  * For this, we create the Person class, as such:
  * <pre>
  *     // Note: Here, Person is the root node, as it has None as parentNode
- *     &#64;XMLNode(name = "Person", parentNode = com.nitnelave.xmlparser.None)
+ *     &#64;XMLNode(name = "Person", parentNode = com.nitnelave.xmlparser.RootNode)
  *     &#64;XMLProperties({&#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class),
  *                      &#64;XMLProperty(name = "Name", key = "name", valueType = String.class)})
  *     public class Person
@@ -52,11 +51,13 @@ import java.util.Collection;
  * And the Child class:
  * <pre>
  *     &#64;XMLNode(name = "Child", parentNode = Person.class, contentType = String.class)
+ *     &#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class)
  *     public class Child
  *     {
  *         String name;
  *           ...
  *         public void setContent(String content) { name = content; }
+ *         public void setAge(Integer age) { ... }
  *     }
  * </pre>
  * The listener for the events:
@@ -76,23 +77,21 @@ import java.util.Collection;
  *     parser.registerListener(new Handler());
  *     parser.parse(inputstream);
  * </pre>
- * </p>
  * <p/>
  * <p>
  * And that's it! You can add more nodes, more properties, a more complex hierarchy, but it's as simple as that.
- * <h3>Error handling</h3>
  * </p>
+ * <h3>Error handling</h3>
  * There are 2 special nodes:
  * <ul>
- * <li>the root node, defined by a parentNode = None, that is required before registering the
+ * <li>the root node, defined by a parentNode = RootNode.class, that is required before registering the
  * listeners;</li>
- * <li>the default node, defined by a name = "" and parentNode = None. If no node are recognized,
- * a default one is created.</li>
+ * <li>the default node, defined by a parentNode = DefaultNode.class. If an unknown XML tag is recognized,
+ * a default node is created.</li>
  * </ul>
- * </p>
  * <h3>Restrictions</h3>
- * <p>
  * <ul>
+ * <li>There has to be one, and only one root node defined.</li>
  * <li>The xml nodes will be created with the empty constructor. Make sure to provide a meaningful one.</li>
  * <li>The listeners must be registered after all nodes are registered, other wise the handle methods of the nodes
  * added later will be ignored.</li>
