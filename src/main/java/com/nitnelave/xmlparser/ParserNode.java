@@ -13,6 +13,7 @@ class ParserNode
     private final Class<?> superClazz;
     private final Class<?> valueClazz;
     private final boolean hasContent;
+    private final boolean isSingleNode;
     private final Collection<ParserProperty> properties = new ArrayList<>();
     private final Collection<Object> handlerList = new ArrayList<>();
 
@@ -29,6 +30,7 @@ class ParserNode
         this.clazz = clazz;
         superClazz = node.parentNode();
         valueClazz = node.contentType();
+        isSingleNode = node.single();
         hasContent = (!valueClazz.equals(None.class));
         if (hasContent)
         {
@@ -121,5 +123,10 @@ class ParserNode
     public void addListener(Object handler)
     {
         handlerList.add(handler);
+    }
+
+    public void registerParent(Object child, Object parent)
+    {
+        Reflect.call(parent, (isSingleNode ? "set" : "add") + getName(), child);
     }
 }

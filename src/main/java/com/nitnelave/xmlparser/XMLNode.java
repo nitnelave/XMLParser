@@ -41,4 +41,14 @@ public @interface XMLNode
      * @return The content class.
      */
     public Class<?> contentType() default None.class;
+
+    /**
+     * The arity of the node. <br />
+     * Determines the name of the method called when adding the node to its parent node. <br />
+     * If it is false (default), the name of the method is "add" + {@link #name() name}; <br />
+     * if true, it is "set" + {@link #name() name};
+     *
+     * @return True if it is a single node.
+     */
+    public boolean single() default false;
 }
