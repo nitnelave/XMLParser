@@ -1,8 +1,6 @@
 package com.nitnelave.xmlparser;
 
 /**
- * Created on 4/19/14
- *
  * @author nitnelave
  */
 class ParserProperty

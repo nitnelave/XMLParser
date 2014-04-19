@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created on 4/19/14
- *
  * @author nitnelave
  */
 class ParserNode

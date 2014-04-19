@@ -3,8 +3,6 @@ package com.nitnelave.xmlparser;
 import java.lang.annotation.*;
 
 /**
- * Created on 4/19/14
- *
  * This annotation describes a property of the XML tag. It must be encapsulated in an XMLProperties
  * to allow for several properties.
  *

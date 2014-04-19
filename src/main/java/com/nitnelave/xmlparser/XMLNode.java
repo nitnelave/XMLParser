@@ -3,8 +3,6 @@ package com.nitnelave.xmlparser;
 import java.lang.annotation.*;
 
 /**
- * Created on 4/19/14
- * <p/>
  * <p>
  * Annotation to describe an XML node structure.
  * For the properties, see {@link XMLProperties}.

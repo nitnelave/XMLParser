@@ -5,8 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Created on 4/17/14
- *
  * @author nitnelave
  */
 final class Reflect

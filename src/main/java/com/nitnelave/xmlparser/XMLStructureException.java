@@ -1,8 +1,6 @@
 package com.nitnelave.xmlparser;
 
 /**
- * Created on 4/19/14
- *
  * <p>
  *     Exception thrown when a class does not implement every method expected,
  *     or the XML structure is otherwise compromised.

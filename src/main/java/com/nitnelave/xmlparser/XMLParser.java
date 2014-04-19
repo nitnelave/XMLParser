@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created on 4/17/14
  * <p>
  * Generic XML SAX parser. This class aims at simplifying greatly the use of SAX parsers,
  * through heavy use of reflection. It allows to easily create local AST or to handle the nodes as they come.
@@ -200,7 +199,6 @@ public class XMLParser
     {
         PARSER_FACTORY.newSAXParser().parse(in, new Handler());
     }
-
 
 
     protected void setDefaultNode(ParserNode defaultNode)

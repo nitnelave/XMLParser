@@ -3,8 +3,6 @@ package com.nitnelave.xmlparser;
 import java.lang.annotation.*;
 
 /**
- * Created on 4/19/14
- *
  * This annotation allows to define the properties of an XML node, i.e. the name and age properties of the tag <br />
  * &lt;Person age="3" name="Arthur"&gt;
  *
