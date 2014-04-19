@@ -1,8 +1,6 @@
 package com.nitnelave.xmlparser;
 
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -10,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * <p>
@@ -121,15 +118,7 @@ public class XMLParser
     private static final SAXParserFactory PARSER_FACTORY = SAXParserFactory.newInstance();
 
     /**
-     * Default constructor.
-     */
-    public XMLParser()
-    {
-        super();
-    }
-
-    /**
-     * Register classes that describe XML Nodes.</br>
+     * Register classes that describe XML Nodes.<br />
      * If the classes do not have the &#64;XMLNode annotation, or there is a required method missing,
      * an XMLStructureException will be raised.
      *
@@ -143,9 +132,7 @@ public class XMLParser
             throws XMLStructureException
     {
         for (Class<?> clazz : nodes)
-        {
             nodeList.add(new ParserNode(this, clazz));
-        }
     }
 
     /**
@@ -161,25 +148,15 @@ public class XMLParser
             throws XMLStructureException
     {
         if (rootNode == null)
-        {
             throw new XMLStructureException("No root node defined for the XML");
-        }
         Class<?> clazz = handler.getClass();
         if (Reflect.hasMethod(clazz, "handleBegin", rootNode.getClazz()))
-        {
             beginHandlers.add(handler);
-        }
         if (Reflect.hasMethod(clazz, "handleEnd", rootNode.getClazz()))
-        {
             endHandlers.add(handler);
-        }
         for (ParserNode parserNode : nodeList)
-        {
             if (Reflect.hasMethod(clazz, "handle", parserNode.getClazz()))
-            {
                 parserNode.addListener(handler);
-            }
-        }
     }
 
     /**
@@ -197,7 +174,7 @@ public class XMLParser
     public void parse(InputStream in)
             throws SAXException, IOException, ParserConfigurationException
     {
-        PARSER_FACTORY.newSAXParser().parse(in, new Handler());
+        PARSER_FACTORY.newSAXParser().parse(in, new Handler(this));
     }
 
 
@@ -205,12 +182,9 @@ public class XMLParser
     throws XMLStructureException
     {
         if (this.defaultNode != null)
-        {
-            throw new XMLStructureException(
-                    "Two default nodes defined: " + defaultNode.getClazz().getName() + " and " + this.defaultNode
-                            .getClazz().getName()
-            );
-        }
+            throw new XMLStructureException("Two default nodes defined: "
+                                            + defaultNode.getClazz().getName() + " and "
+                                            + this.defaultNode.getClazz().getName());
         this.defaultNode = defaultNode;
     }
 
@@ -219,150 +193,41 @@ public class XMLParser
     throws XMLStructureException
     {
         if (rootNode != null)
-        {
-            throw new XMLStructureException(
-                    "Two root nodes defined: " + parserNode.getClazz().getName() + " and " + rootNode.getClazz()
-                                                                                                     .getName()
-            );
-        }
+            throw new XMLStructureException("Two root nodes defined: "
+                                            + parserNode.getClazz().getName() + " and "
+                                            + rootNode.getClazz().getName());
         rootNode = parserNode;
     }
 
-    private class Handler extends DefaultHandler
+    protected Iterable<Object> getBeginHandlers()
     {
-        private final List<Object> stack = new ArrayList<>();
-        private StringBuffer buff = null;
+        return beginHandlers;
+    }
 
-        @Override
-        public void startElement(String uri, String localName, String qName, Attributes attributes)
-        throws SAXException
-        {
-            buff = new StringBuffer();
-            ParserNode node = getNode(qName);
-            if (node == null)
-            {
-                push(null);
-            }
-            else
-            {
+    protected Iterable<Object> getEndHandlers()
+    {
+        return endHandlers;
+    }
 
-                Class<?> superClazz = node.getSuperClazz();
-                if (!superClazz.equals(None.class) && !superClazz.equals(peek().getClass()))
-                {
-                    throw new SAXException();
-                }
+    protected ParserNode getNode(String qName)
+    {
+        for (ParserNode node : nodeList)
+            if (qName.equalsIgnoreCase(node.getName()))
+                return node;
+        return defaultNode;
+    }
 
-                push(Reflect.newInstance(node.getClazz()));
-                if (isRoot(node))
-                {
-                    for (Object o : beginHandlers)
-                    {
-                        Reflect.call(o, "handleBegin", peek());
-                    }
-                }
-                getProperties(node, attributes);
-            }
-        }
+    protected ParserNode getNodeForClass(Class<?> c)
+    {
+        for (ParserNode n : nodeList)
+            if (c.equals(n.getClazz()))
+                return n;
+        assert false;
+        return null;
+    }
 
-        private void getProperties(ParserNode node, Attributes attributes)
-        throws SAXException
-        {
-            for (ParserProperty property : node.getProperties())
-            {
-                String v = attributes.getValue(property.getPropertyName());
-                if (v == null)
-                {
-                    throw new SAXException();
-                }
-                Reflect.setString(peek(), property.getName(), property.getValueType(), v);
-            }
-        }
-
-        @Override
-        public void characters(char[] ch, int start, int length)
-        throws SAXException
-        {
-            buff.append(new String(ch, start, length).trim());
-        }
-
-        @Override
-        public void endElement(String uri, String localName, String qName)
-        throws SAXException
-        {
-            Object last = peek();
-            ParserNode lastNode = null;
-            if (last != null)
-            {
-                lastNode = getNodeForClass(last.getClass());
-                if (lastNode.hasContent())
-                {
-                    Reflect.setString(peek(), "Content", lastNode.getValueClazz(), buff.toString());
-                }
-            }
-            pop();
-
-
-            ParserNode n = getNode(qName);
-            if (lastNode != null)
-            {
-                if (!stack.isEmpty())
-                {
-                    Reflect.call(peek(), "add" + lastNode.getName(), last);
-                }
-                else if (isRoot(n))
-                {
-                    for (Object o : endHandlers)
-                    {
-                        Reflect.call(o, "handleEnd", last);
-                    }
-                }
-                lastNode.call(last);
-            }
-        }
-
-        private ParserNode getNode(String qName)
-        {
-            for (ParserNode node : nodeList)
-            {
-                if (qName.equalsIgnoreCase(node.getName()))
-                {
-                    return node;
-                }
-            }
-            return defaultNode;
-        }
-
-        private ParserNode getNodeForClass(Class<?> c)
-        {
-            for (ParserNode n : nodeList)
-            {
-                if (c.equals(n.getClazz()))
-                {
-                    return n;
-                }
-            }
-            assert false;
-            return null;
-        }
-
-        private void push(Object o)
-        {
-            stack.add(o);
-        }
-
-        private Object peek()
-        {
-            return stack.get(stack.size() - 1);
-        }
-
-        private void pop()
-        {
-            stack.remove(stack.size() - 1);
-        }
-
-        private boolean isRoot(ParserNode n)
-        {
-            return n != null && n.equals(rootNode);
-        }
+    protected boolean isRoot(ParserNode n)
+    {
+        return n != null && n.equals(rootNode);
     }
 }

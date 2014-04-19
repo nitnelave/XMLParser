@@ -1,0 +1,110 @@
+package com.nitnelave.xmlparser;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+* @author nitnelave
+*/
+class Handler extends DefaultHandler
+{
+    private final XMLParser xmlParser;
+    private final List<Object> stack = new ArrayList<>();
+    private StringBuffer buff = null;
+
+    public Handler(XMLParser xmlParser)
+    {
+        super();
+        this.xmlParser = xmlParser;
+    }
+
+    @Override
+    public void startElement(String uri, String localName, String qName, Attributes attributes)
+    throws SAXException
+    {
+        buff = new StringBuffer();
+        ParserNode node = xmlParser.getNode(qName);
+        if (node == null)
+            push(null);
+        else
+        {
+
+            Class<?> superClazz = node.getSuperClazz();
+            if (!superClazz.equals(None.class) && !superClazz.equals(peek().getClass()))
+                throw new SAXException("Invalid XML architecture: " + node.getName() + " as child of a " +
+                                       xmlParser.getNodeForClass(peek().getClass()).getName() + ". " +
+                                       xmlParser.getNodeForClass(superClazz).getName() + " expected.");
+
+            push(Reflect.newInstance(node.getClazz()));
+            if (xmlParser.isRoot(node))
+                for (Object o : xmlParser.getBeginHandlers())
+                    Reflect.call(o, "handleBegin", peek());
+            getProperties(node, attributes);
+        }
+    }
+
+    private void getProperties(ParserNode node, Attributes attributes)
+    throws SAXException
+    {
+        for (ParserProperty property : node.getProperties())
+        {
+            String v = attributes.getValue(property.getPropertyName());
+            if (v == null)
+                throw new SAXException();
+            Reflect.setString(peek(), property.getName(), property.getValueType(), v);
+        }
+    }
+
+    @Override
+    public void characters(char[] ch, int start, int length)
+    throws SAXException
+    {
+        buff.append(new String(ch, start, length).trim());
+    }
+
+    @Override
+    public void endElement(String uri, String localName, String qName)
+    throws SAXException
+    {
+        Object last = peek();
+        ParserNode lastNode = null;
+        if (last != null)
+        {
+            lastNode = xmlParser.getNodeForClass(last.getClass());
+            if (lastNode.hasContent())
+                Reflect.setString(peek(), "Content", lastNode.getValueClazz(), buff.toString());
+        }
+        pop();
+
+
+        ParserNode n = xmlParser.getNode(qName);
+        if (lastNode != null)
+        {
+            if (!stack.isEmpty())
+                lastNode.registerParent(last, peek());
+            else if (xmlParser.isRoot(n))
+                for (Object o : xmlParser.getEndHandlers())
+                    Reflect.call(o, "handleEnd", last);
+            lastNode.call(last);
+        }
+    }
+
+    private void push(Object o)
+    {
+        stack.add(o);
+    }
+
+    private Object peek()
+    {
+        return stack.get(stack.size() - 1);
+    }
+
+    private void pop()
+    {
+        stack.remove(stack.size() - 1);
+    }
+}
