@@ -25,7 +25,8 @@ public @interface XMLNode
     public String name();
 
     /**
-     * The class of the parent node in the XML structure. If the class is {@link None}, then the node is marked as root.
+     * The class of the parent node in the XML structure. If the class is {@link None}, then the node is marked as
+     * root.
      * <br />
      * If the name is also "", then the node is the default (error handling) one instead.
      *
@@ -36,6 +37,7 @@ public @interface XMLNode
     /**
      * Optional content. If the contentType is not {@link None )}, then the class must define a
      * method setContent(String s).
+     *
      * @return The content class.
      */
     public Class<?> contentType() default None.class;

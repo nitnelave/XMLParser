@@ -16,10 +16,12 @@ class ParserProperty
         propertyName = property.key();
         valueType = property.valueType();
         if (!Reflect.hasStringConstructor(valueType))
-            throw new XMLStructureException("Property " + name + ": value type "
-                                            + valueType.getName()
-                                            + " must implement constructor "
-                                            + valueType.getName() + "(String s)");
+        {
+            throw new XMLStructureException(
+                    "Property " + name + ": value type " + valueType.getName() + " must implement constructor "
+                    + valueType.getName() + "(String s)"
+            );
+        }
     }
 
     public String getName()

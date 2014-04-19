@@ -34,16 +34,15 @@ class ParserNode
         {
             if (!Reflect.hasStringConstructor(valueClazz))
             {
-                throw new XMLStructureException("XMLNode " + name + ": content type "
-                                                + valueClazz.getName()
-                                                + " must implement constructor "
-                                                + valueClazz.getName() + "(String s)");
+                throw new XMLStructureException(
+                        "XMLNode " + name + ": content type " + valueClazz.getName() + " must implement constructor "
+                        + valueClazz.getName() + "(String s)");
             }
             if (!Reflect.hasMethod(clazz, "setContent", valueClazz))
             {
-                throw new XMLStructureException("XMLNode " + clazz.getName()
-                                                + " is missing the method setContent("
-                                                + valueClazz.getName() + ')');
+                throw new XMLStructureException(
+                        "XMLNode " + clazz.getName() + " is missing the method setContent(" + valueClazz.getName()
+                        + ')');
             }
         }
         XMLProperties prop = clazz.getAnnotation(XMLProperties.class);

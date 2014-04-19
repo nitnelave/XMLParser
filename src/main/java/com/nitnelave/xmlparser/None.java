@@ -1,8 +1,9 @@
 package com.nitnelave.xmlparser;
 
 /**
+ * Dummy class for default value.
  * <p>
- *     This is the dummy class to specify the root node or empty content.
+ * This is the dummy class to specify the root node or empty content.
  * </p>
  *
  * @author nitnelave
@@ -11,5 +12,6 @@ package com.nitnelave.xmlparser;
 public final class None
 {
     private None()
-    {}
+    {
+    }
 }

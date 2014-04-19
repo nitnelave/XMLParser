@@ -1,13 +1,14 @@
 package com.nitnelave.xmlparser;
 
 /**
+ * Exception raised when registering invalid XML nodes.
  * <p>
- *     Exception thrown when a class does not implement every method expected,
- *     or the XML structure is otherwise compromised.
+ * Exception thrown when a class does not implement every method expected,
+ * or the XML structure is otherwise compromised.
  * </p>
- *
+ * <p/>
  * <p>
- *     The details of the exception are in the message.
+ * The details of the exception are in the message.
  * </p>
  *
  * @author nitnelave
@@ -18,16 +19,19 @@ public class XMLStructureException extends Exception
 
     /**
      * Create an exception with the given message.
-     * @param s
+     *
+     * @param message
+     *         The exception message.
      */
-    public XMLStructureException(String s)
+    public XMLStructureException(String message)
     {
         super();
-        message = s;
+        this.message = message;
     }
 
     /**
      * Get the details of the exception.
+     *
      * @return A string with the message.
      */
     @Override
