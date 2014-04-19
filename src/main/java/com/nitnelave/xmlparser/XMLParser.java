@@ -26,18 +26,20 @@ import java.util.Collection;
  * We want to parse the following type of XML file:
  * <br/>
  * <p>
- * &lt;Person age="3" name="John"&gt;<br/>
- * &lt;Child age="2"&gt;Eric&lt;/Child&gt;<br/>
- * &lt;Child&gt;Paul&lt;/Child&gt;<br/>
- * &lt;/Person&gt;<br/>
+ * <pre>
+ * {@literal
+ * <Person age="3" name="John">
+ *     <Child age="2">Eric</Child>
+ *     <Child>Paul</Child>
+ * </Person>
+ * }</pre>
  * </p>
  * <p/>
  * For this, we create the Person class, as such:
  * <pre>
- *     // Note: Here, Person is the root node, as it has None as parentNode
  *     &#64;XMLNode(name = "Person", parentNode = com.nitnelave.xmlparser.RootNode)
  *     &#64;XMLProperties({&#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class, required = true),
- *                      &#64;XMLProperty(name = "Name", key = "name", valueType = String.class, required = true)})
+ *                     &#64;XMLProperty(name = "Name", key = "name", valueType = String.class, required = true)})
  *     public class Person
  *     {
  *         Collection&lt;Child&gt; children;
