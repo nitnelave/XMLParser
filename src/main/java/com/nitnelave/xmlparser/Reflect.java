@@ -39,7 +39,7 @@ final class Reflect
         }
     }
 
-    public static void set(Object o, String name, Class<?> valueClass, Object value)
+    private static void set(Object o, String name, Class<?> valueClass, Object value)
     {
         if (value == null)
         {

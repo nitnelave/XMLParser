@@ -22,11 +22,9 @@ class ParserNode
     {
         XMLNode node = clazz.getAnnotation(XMLNode.class);
         if (node == null)
-        {
-            throw new XMLStructureException(
-                    "Trying to register class " + clazz.getName() + " that does not have the XMLNode annotation");
-        }
-        name = node.name();
+            throw new XMLStructureException("Trying to register class " + clazz.getName()
+                                            + " that does not have the XMLNode annotation");
+        name = node.name().trim();
         this.clazz = clazz;
         superClazz = node.parentNode();
         valueClazz = node.contentType();
@@ -115,9 +113,7 @@ class ParserNode
     public void call(Object last)
     {
         for (Object o : handlerList)
-        {
             Reflect.call(o, "handle", last);
-        }
     }
 
     public void addListener(Object handler)

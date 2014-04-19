@@ -101,7 +101,6 @@ import java.util.Collection;
  * <li>The classes for the node content and the properties must have a constructor taking a String as unique
  * parameter. For a simple number, use Integer.class.</li>
  * </ul>
- * </p>
  *
  * @author nitnelave
  * @see XMLProperty
