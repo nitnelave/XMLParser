@@ -1,0 +1,25 @@
+package com.nitnelave.xmlparser;
+
+import java.lang.annotation.*;
+
+/**
+ * Created on 4/19/14
+ *
+ * This annotation allows to define the properties of an XML node, i.e. the name and age properties of the tag <br />
+ * &lt;Person age="3" name="Arthur"&gt;
+ *
+ * @author nitnelave
+ * @see XMLNode
+ * @see XMLProperty
+ */
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface XMLProperties
+{
+    /**
+     * The list of properties of the tag.
+     * @return The list of properties.
+     */
+    XMLProperty[] value();
+}
