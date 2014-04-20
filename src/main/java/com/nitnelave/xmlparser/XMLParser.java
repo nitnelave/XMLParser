@@ -66,7 +66,7 @@ public class XMLParser
      * @param in
      *         The stream to read from
      * @throws SAXException
-     *         parsing error; see SAXParser documentation
+     *         parsing error, either from SAX (see SAX documentation) or from a problem in the parsed file structure.
      * @throws ParserConfigurationException
      *         see SAXParser documentation
      * @throws IOException

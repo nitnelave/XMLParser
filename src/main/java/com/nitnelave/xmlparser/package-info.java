@@ -37,7 +37,7 @@
  * </p>
  * <h3>Restrictions</h3>
  * <ul>
- * <li>The listeners must be registered after all nodes are registered, other wise the handle methods of the nodes
+ * <li>The listeners must be registered after all nodes are registered, otherwise the handle methods of the nodes
  * added later will be ignored.</li>
  * <li>In case of a problem in the XML structure, an {@link com.nitnelave.xmlparser.XMLStructureException} will be
  * raised, with a description of the problem in the message.</li>
@@ -58,7 +58,7 @@
  * <p/>
  * For this, we create the Person class, as such:
  * <pre>
- *     &#64;XMLNode(name = "Person", parentNode = com.nitnelave.xmlparser.RootNode.class)
+ *     &#64;XMLNode(name = "Person", type = XMLNodeType.ROOT)
  *     &#64;XMLProperties({&#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class, required = true),
  *                     &#64;XMLProperty(name = "Name", key = "name", valueType = String.class, required = true)})
  *     public class Person

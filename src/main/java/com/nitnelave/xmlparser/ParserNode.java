@@ -13,7 +13,9 @@ class ParserNode
     private final Class<?> superClazz;
     private final Class<?> valueClazz;
     private final boolean hasContent;
+    private final boolean hasParent;
     private final boolean isSingleNode;
+    private final XMLNodeType type;
     private final Collection<ParserProperty> properties = new ArrayList<>();
     private final Collection<Object> handlerList = new ArrayList<>();
     private Collection<Object> beginHandlers = new ArrayList<>();
@@ -30,7 +32,9 @@ class ParserNode
         superClazz = node.parentNode();
         valueClazz = node.contentType();
         isSingleNode = node.single();
+        type = node.type();
         hasContent = (!valueClazz.equals(None.class));
+        hasParent = (!superClazz.equals(None.class));
         if (hasContent)
         {
             if (!Reflect.hasStringConstructor(valueClazz))
@@ -43,32 +47,32 @@ class ParserNode
                                                 " is missing the method setContent("
                                                 + valueClazz.getName() + ')');
         }
-        boolean def = superClazz.equals(DefaultNode.class);
-        if (def)
+        if (type == XMLNodeType.DEFAULT)
             xmlParser.setDefaultNode(this);
         else if (name.isEmpty())
             throw new XMLStructureException("Nodes must define non-empty names, except for the default one.");
-        constructProperties(def);
+        constructProperties();
     }
 
-    private void constructProperties(boolean isDefault)
+    private void constructProperties()
     throws XMLStructureException
     {
         XMLProperties prop = clazz.getAnnotation(XMLProperties.class);
         if (prop != null)
             for (XMLProperty p : prop.value())
-                registerProperty(p, isDefault);
+                registerProperty(p);
         XMLProperty sProp = clazz.getAnnotation(XMLProperty.class);
         if (sProp != null)
-            registerProperty(sProp, isDefault);
+            registerProperty(sProp);
     }
 
-    private void registerProperty(XMLProperty property, boolean isDefault)
+    private void registerProperty(XMLProperty property)
     throws XMLStructureException
     {
-        if (isDefault && property.required())
+        if (type == XMLNodeType.DEFAULT && property.required())
             throw new XMLStructureException("Default node cannot have required properties.");
-        if (!isDefault && !Reflect.hasMethod(clazz, "set" + property.name(), property.valueType()))
+        if (!(type == XMLNodeType.DEFAULT)
+            && !Reflect.hasMethod(clazz, "set" + property.name(), property.valueType()))
             throw new XMLStructureException("XMLNode " + clazz.getName()
                                             + " is missing the method set" + property.name()
                                             + '(' + property.valueType().getName() + ')');
@@ -128,5 +132,15 @@ class ParserNode
     public Iterable<Object> getBeginHandlers()
     {
         return beginHandlers;
+    }
+
+    public boolean isRoot()
+    {
+        return type == XMLNodeType.ROOT;
+    }
+
+    public boolean hasParent()
+    {
+        return !superClazz.equals(None.class);
     }
 }

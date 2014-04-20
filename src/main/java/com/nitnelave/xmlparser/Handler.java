@@ -33,11 +33,11 @@ class Handler extends DefaultHandler
         else
         {
 
-            Class<?> superClazz = node.getSuperClazz();
-            if (superClazz.equals(RootNode.class) && !stack.isEmpty())
+            if (node.isRoot() && !stack.isEmpty())
                 throw new SAXException("Root node " + node.getName()
                                        + " as child of another node: " + peek().getClass().getName());
-            if (!superClazz.equals(None.class)
+            Class<?> superClazz = node.getSuperClazz();
+            if (node.hasParent()
                 && !superClazz.equals(peek().getClass()))
                 throw new SAXException("Invalid XML architecture: " + node.getName() + " as child of a " +
                                        xmlParser.getNodeForClass(peek().getClass()).getName() + ". " +
