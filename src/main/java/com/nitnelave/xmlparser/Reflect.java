@@ -1,5 +1,7 @@
 package com.nitnelave.xmlparser;
 
+import org.xml.sax.SAXException;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -10,6 +12,7 @@ import java.lang.reflect.Method;
 final class Reflect
 {
     public static Object newInstance(Class<?> clazz)
+    throws SAXException
 
     {
         try
@@ -17,8 +20,8 @@ final class Reflect
             return clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException ignored)
         {
+            throw new SAXException("Could not instantiate class " + clazz.getName());
         }
-        return null;
     }
 
     public static void setString(Object o, String name, Class<?> valueClass, String value)
