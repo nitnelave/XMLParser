@@ -38,6 +38,10 @@ class ParserNode
         type = node.type();
         hasContent = (!valueClazz.equals(None.class));
         hasParent = (!superClazz.equals(None.class));
+        if (isRoot() && hasParent())
+            throw new XMLStructureException(name + ": Trying to register a root node with a parent node");
+        if (type == XMLNodeType.DEFAULT && hasParent())
+            throw new XMLStructureException(name + ": Trying to register a default node with a parent node");
         if (hasContent)
         {
             if (!Reflect.hasStringConstructor(valueClazz))

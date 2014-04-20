@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * <p>
  * Generic XML SAX parser.
- *
+ * <p>
  * This class handles the registration of {@link com.nitnelave.xmlparser.XMLNode}s and listeners,
  * and takes care of the actual parsing.
+ * </p>
  *
  * @author nitnelave
  * @see XMLProperty

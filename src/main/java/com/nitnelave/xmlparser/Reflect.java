@@ -23,11 +23,11 @@ final class Reflect
 
     public static void setString(Object o, String name, Class<?> valueClass, String value)
     {
-        Object instance = null;
         if (value == null)
         {
             throw new IllegalArgumentException();
         }
+        Object instance = null;
         try
         {
             Constructor<?> con = valueClass.getConstructor(String.class);

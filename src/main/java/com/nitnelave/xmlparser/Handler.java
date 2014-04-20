@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-* @author nitnelave
-*/
+ * @author nitnelave
+ */
 class Handler extends DefaultHandler
 {
     private final XMLParser xmlParser;
