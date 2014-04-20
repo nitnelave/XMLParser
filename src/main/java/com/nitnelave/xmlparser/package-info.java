@@ -2,6 +2,20 @@
  * This package aims at simplifying greatly the use of SAX parsers,
  * through heavy use of reflection. It allows to easily create local AST or to handle the nodes as they come.
  * </p>
+ * <p>
+ *     The advantage of SAX parsers is that the document does not need to be entirely known
+ *     at the time of the parsing; the document is parsed as it is read, which allows for
+ *     streamable documents, such as messages in a network communication.
+ *     The other side of the coin is that to use a SAX parser, many small-scale actions are
+ *     required, such as buffering the text inside a node.
+ * </p>
+ * <p>
+ *     This package provides a overlay around the SAX parser, to take care of the finer details,
+ *     storing the nodes and their properties directly in classes using reflection, and telling
+ *     a listener when each node is done parsing. A simple interface using annotation to reflect
+ *     the document structure, along with natural method names will allow a simple parsing in no
+ *     time.
+ * </p>
  * <p/>
  * <p>
  * The XML file structure is defined by annotations (see {@link com.nitnelave.xmlparser.XMLNode}
@@ -102,5 +116,8 @@
  * And that's it! You can add more nodes, more properties, a more complex hierarchy, but it's as simple as that.
  * </p>
  * @author nitnelave
+ * @see com.nitnelave.xmlparser.XMLParser The class used for parsing and registering the structure and listeners.
+ * @see com.nitnelave.xmlparser.XMLNode The annotation to describe the document's structure.
+ * @see com.nitnelave.xmlparser.XMLProperty The annotation to describe a node's properties.
  */
 package com.nitnelave.xmlparser;
