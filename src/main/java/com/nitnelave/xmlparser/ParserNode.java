@@ -27,7 +27,10 @@ class ParserNode
         if (node == null)
             throw new XMLStructureException("Trying to register class " + clazz.getName()
                                             + " that does not have the XMLNode annotation");
-        name = node.name().trim();
+        String tmpName = node.name().trim();
+        if (tmpName.isEmpty())
+            tmpName = clazz.getSimpleName();
+        name = tmpName;
         this.clazz = clazz;
         superClazz = node.parentNode();
         valueClazz = node.contentType();

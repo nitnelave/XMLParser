@@ -51,14 +51,15 @@ public @interface XMLNode
 {
     /**
      * The name of the XML tag to recognize, and the name of the parent method to set the child.
-     * As xml is case insensitive, it is recommended to type this field in CamelCase. <br />
-     * I.e. if the field is Node, then the method addNode(Node n) of the parent node will be called if found.
+     * As xml is case insensitive, it is recommended to type this field in CamelCase to have a nice method name.<br/>
+     * E.g. if the field is Node, then the method addNode(Node n) of the parent node will be called if found.
      * <p/>
+     * If the field is left empty, then the name will default to the class short name.
      * NB: The prefix of the method can be changed with the {@link #single() single} field.
      *
      * @return The name of the XML tag
      */
-    public String name();
+    public String name() default "";
 
     /**
      * The type of the node.

@@ -73,7 +73,7 @@
  * </pre>
  * And the Child class:
  * <pre>
- *     &#64;XMLNode(name = "Child", parentNode = Person.class, contentType = String.class)
+ *     &#64;XMLNode(parentNode = Person.class, contentType = String.class)
  *     &#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class)
  *     public class Child
  *     {
@@ -85,7 +85,7 @@
  * </pre>
  * Let's add some error checking, in case of unrecognized nodes:
  * <pre>
- *     &#64;XMLNode(name = "", parentNode = com.nitnelave.xmlparser.DefaultNode.class)
+ *     &#64;XMLNode(type = XMLNodeType.DEFAULT)
  *     public class UnknownNode
  *     {
  *         String name;
