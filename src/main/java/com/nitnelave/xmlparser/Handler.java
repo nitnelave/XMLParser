@@ -29,7 +29,7 @@ class Handler extends DefaultHandler
         buff = new StringBuffer();
         ParserNode node = xmlParser.getNode(qName);
         if (node == null)
-            push(null);
+            throw new SAXException("Unknown XML tag: " + qName);
         else
         {
 
@@ -79,22 +79,15 @@ class Handler extends DefaultHandler
     throws SAXException
     {
         Object last = peek();
-        ParserNode lastNode = null;
-        if (last != null)
-        {
-            lastNode = xmlParser.getNodeForClass(last.getClass());
-            if (lastNode.hasContent())
-                Reflect.setString(peek(), "Content", lastNode.getValueClazz(), buff.toString());
-        }
+        ParserNode lastNode = xmlParser.getNodeForClass(last.getClass());
+        if (lastNode.hasContent())
+            Reflect.setString(peek(), "Content", lastNode.getValueClazz(), buff.toString());
         pop();
 
 
-        if (lastNode != null)
-        {
-            if (!stack.isEmpty())
-                lastNode.registerParent(last, peek());
-            lastNode.call(last);
-        }
+        if (!stack.isEmpty())
+            lastNode.registerParent(last, peek());
+        lastNode.call(last);
     }
 
     private void push(Object o)
