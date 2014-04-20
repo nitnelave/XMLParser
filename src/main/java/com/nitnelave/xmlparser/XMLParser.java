@@ -23,10 +23,7 @@ import java.util.Collection;
  */
 public class XMLParser
 {
-    private final Collection<Object> beginHandlers = new ArrayList<>();
-    private final Collection<Object> endHandlers = new ArrayList<>();
     private ParserNode defaultNode = null;
-    private ParserNode rootNode = null;
     private final Collection<ParserNode> nodeList = new ArrayList<>();
     private static final SAXParserFactory PARSER_FACTORY = SAXParserFactory.newInstance();
 
@@ -60,16 +57,8 @@ public class XMLParser
     public void registerListener(Object handler)
             throws XMLStructureException
     {
-        if (rootNode == null)
-            throw new XMLStructureException("No root node defined for the XML");
-        Class<?> clazz = handler.getClass();
-        if (Reflect.hasMethod(clazz, "handleBegin", rootNode.getClazz()))
-            beginHandlers.add(handler);
-        if (Reflect.hasMethod(clazz, "handleEnd", rootNode.getClazz()))
-            endHandlers.add(handler);
         for (ParserNode parserNode : nodeList)
-            if (Reflect.hasMethod(clazz, "handle", parserNode.getClazz()))
-                parserNode.addListener(handler);
+            parserNode.addListener(handler);
     }
 
     /**
@@ -101,27 +90,6 @@ public class XMLParser
         this.defaultNode = defaultNode;
     }
 
-
-    protected void setRootNode(ParserNode parserNode)
-    throws XMLStructureException
-    {
-        if (rootNode != null)
-            throw new XMLStructureException("Two root nodes defined: "
-                                            + parserNode.getClazz().getName() + " and "
-                                            + rootNode.getClazz().getName());
-        rootNode = parserNode;
-    }
-
-    protected Iterable<Object> getBeginHandlers()
-    {
-        return beginHandlers;
-    }
-
-    protected Iterable<Object> getEndHandlers()
-    {
-        return endHandlers;
-    }
-
     protected ParserNode getNode(String qName)
     {
         for (ParserNode node : nodeList)
@@ -137,10 +105,5 @@ public class XMLParser
                 return n;
         assert false;
         return null;
-    }
-
-    protected boolean isRoot(ParserNode n)
-    {
-        return n != null && n.equals(rootNode);
     }
 }

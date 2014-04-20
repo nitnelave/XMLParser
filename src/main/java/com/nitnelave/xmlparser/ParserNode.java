@@ -16,6 +16,7 @@ class ParserNode
     private final boolean isSingleNode;
     private final Collection<ParserProperty> properties = new ArrayList<>();
     private final Collection<Object> handlerList = new ArrayList<>();
+    private Collection<Object> beginHandlers = new ArrayList<>();
 
     public ParserNode(XMLParser xmlParser, Class<?> clazz)
     throws XMLStructureException
@@ -47,8 +48,6 @@ class ParserNode
             xmlParser.setDefaultNode(this);
         else if (name.isEmpty())
             throw new XMLStructureException("Nodes must define non-empty names, except for the default one.");
-        else if (superClazz.equals(RootNode.class))
-            xmlParser.setRootNode(this);
     }
 
     private void constructProperties()
@@ -112,11 +111,19 @@ class ParserNode
 
     public void addListener(Object handler)
     {
-        handlerList.add(handler);
+        if (Reflect.hasMethod(clazz, "handle", getClazz()))
+            handlerList.add(handler);
+        if (Reflect.hasMethod(clazz, "handleBegin", getClazz()))
+            beginHandlers.add(handler);
     }
 
     public void registerParent(Object child, Object parent)
     {
         Reflect.call(parent, (isSingleNode ? "set" : "add") + getName(), child);
+    }
+
+    public Iterable<Object> getBeginHandlers()
+    {
+        return beginHandlers;
     }
 }

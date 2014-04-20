@@ -34,16 +34,19 @@ class Handler extends DefaultHandler
         {
 
             Class<?> superClazz = node.getSuperClazz();
-            if (!superClazz.equals(None.class) && !superClazz.equals(peek().getClass()))
+            if (superClazz.equals(RootNode.class) && !stack.isEmpty())
+                throw new SAXException("Root node " + node.getName()
+                                       + " as child of another node: " + peek().getClass().getName());
+            if (!superClazz.equals(None.class)
+                && !superClazz.equals(peek().getClass()))
                 throw new SAXException("Invalid XML architecture: " + node.getName() + " as child of a " +
                                        xmlParser.getNodeForClass(peek().getClass()).getName() + ". " +
                                        xmlParser.getNodeForClass(superClazz).getName() + " expected.");
 
             push(Reflect.newInstance(node.getClazz()));
-            if (xmlParser.isRoot(node))
-                for (Object o : xmlParser.getBeginHandlers())
-                    Reflect.call(o, "handleBegin", peek());
             getProperties(node, attributes);
+            for (Object o : node.getBeginHandlers())
+                Reflect.call(o, "handleBegin", peek());
         }
     }
 
@@ -86,14 +89,10 @@ class Handler extends DefaultHandler
         pop();
 
 
-        ParserNode n = xmlParser.getNode(qName);
         if (lastNode != null)
         {
             if (!stack.isEmpty())
                 lastNode.registerParent(last, peek());
-            else if (xmlParser.isRoot(n))
-                for (Object o : xmlParser.getEndHandlers())
-                    Reflect.call(o, "handleEnd", last);
             lastNode.call(last);
         }
     }
