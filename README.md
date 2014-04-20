@@ -1,8 +1,5 @@
-/----------------.
-|   XML Parser   |
-`----------------/
-
-By nitnelave
+XMLParser
+=========
 
 XML Parser is (as the name implies) a XML Parsing library, for Java (v 7 and
 up), based on SAX XML parsing.
