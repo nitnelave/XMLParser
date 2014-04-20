@@ -16,7 +16,7 @@ import java.lang.annotation.*;
  * {@code <Person name="John" age="18" />}<br />
  * could be described by the annotation:
  * <pre>
- *     &#64;XMLNode(type = XMLNodeType.ROOT)
+ *     &#64;XMLNode
  *     &#64;XMLProperties({&#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class),
  *                     &#64;XMLProperty(name = "Name", key = "name", valueType = String.class, required = true)})
  *     public class Person { ... }

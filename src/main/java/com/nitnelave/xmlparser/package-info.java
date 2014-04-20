@@ -58,6 +58,7 @@
  * <p/>
  * For this, we create the Person class, as such:
  * <pre>
+ *     // Here, the "name" attribute for XMLNode is not necessary, as it is the same as the class name.
  *     &#64;XMLNode(name = "Person", type = XMLNodeType.ROOT)
  *     &#64;XMLProperties({&#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class, required = true),
  *                     &#64;XMLProperty(name = "Name", key = "name", valueType = String.class, required = true)})
@@ -73,7 +74,10 @@
  * </pre>
  * And the Child class:
  * <pre>
- *     &#64;XMLNode(parentNode = Person.class, contentType = String.class)
+ *     // Although not required, the parentNode attribute allows to check that the direct parent is a person.
+ *     // That way, the &lt;Child&gt; node cannot be parsed at the root, or as a subnode of any other node.
+ *     // The "single" attribute defaults to false, so it is not necessary here
+ *     &#64;XMLNode(parentNode = Person.class, contentType = String.class, single = false)
  *     &#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class)
  *     public class Child
  *     {
