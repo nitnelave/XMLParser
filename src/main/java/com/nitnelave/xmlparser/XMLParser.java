@@ -11,99 +11,10 @@ import java.util.Collection;
 
 /**
  * <p>
- * Generic XML SAX parser. This class aims at simplifying greatly the use of SAX parsers,
- * through heavy use of reflection. It allows to easily create local AST or to handle the nodes as they come.
- * </p>
- * <p/>
- * <p>
- * The XML file structure is defined by annotations (see {@link XMLNode} and {@link XMLProperty})
- * on the node classes, that are then registered in the parser.<br/>
- * Listeners are simply classes that define the right methods (handles).
- * </p>
- * <p/>
- * <p>
- * <h3>Example use</h3>
- * We want to parse the following type of XML file:
- * <br/>
- * <p>
- * <pre>
- * {@literal
- * <Person age="3" name="John">
- *     <Child age="2">Eric</Child>
- *     <Child>Paul</Child>
- * </Person>
- * }</pre>
- * </p>
- * <p/>
- * For this, we create the Person class, as such:
- * <pre>
- *     &#64;XMLNode(name = "Person", parentNode = com.nitnelave.xmlparser.RootNode)
- *     &#64;XMLProperties({&#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class, required = true),
- *                     &#64;XMLProperty(name = "Name", key = "name", valueType = String.class, required = true)})
- *     public class Person
- *     {
- *         Collection&lt;Child&gt; children;
- *           ...
- *         public void setAge(Integer age) { ... }
- *         public void setName(String name) { ... }
- *           ...
- *         public void addChild(Child c) { children.add(c); }
- *     }
- * </pre>
- * And the Child class:
- * <pre>
- *     &#64;XMLNode(name = "Child", parentNode = Person.class, contentType = String.class)
- *     &#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class)
- *     public class Child
- *     {
- *         String name;
- *           ...
- *         public void setContent(String content) { name = content; }
- *         public void setAge(Integer age) { ... }
- *     }
- * </pre>
- * The listener for the events:
- * <pre>
- *     public class Handler
- *     {
- *         public void handleBegin(Person p) { // got opening &lt;Person&gt; }
- *         public void handleEnd(Person p) { // got closing &lt;/Person&gt; }
- *         public void handle(Child c) { // got a whole &lt;Child&gt;&lt;/Child&gt; subtree }
- *           ...
- *     }
- * </pre>
- * Then we register the nodes, the listener, and we start the parsing:
- * <pre>
- *     XMLParser parser = new XMLParser();
- *     parser.registerNodes(Person.class, Child.class);
- *     parser.registerListener(new Handler());
- *     parser.parse(inputstream);
- * </pre>
- * <p/>
- * <p>
- * And that's it! You can add more nodes, more properties, a more complex hierarchy, but it's as simple as that.
- * </p>
- * <h3>Error handling</h3>
- * There are 2 special nodes:
- * <ul>
- * <li>the root node, defined by a parentNode = RootNode.class, that is required before registering the
- * listeners;</li>
- * <li>the default node, defined by a parentNode = DefaultNode.class. If an unknown XML tag is recognized,
- * a default node is created.</li>
- * </ul>
- * Furthermore, if a node is missing a property marked required, any xml corresponding XML tag missing the property
- * will raise an exception upon parsing.
- * <h3>Restrictions</h3>
- * <ul>
- * <li>There has to be one, and only one root node defined.</li>
- * <li>The xml nodes will be created with the empty constructor. Make sure to provide a meaningful one.</li>
- * <li>The listeners must be registered after all nodes are registered, other wise the handle methods of the nodes
- * added later will be ignored.</li>
- * <li>In case of a problem in the XML structure, an {@link XMLStructureException} will be
- * raised, with a description of the problem in the message.</li>
- * <li>The classes for the node content and the properties must have a constructor taking a String as unique
- * parameter. For a simple number, use Integer.class.</li>
- * </ul>
+ * Generic XML SAX parser.
+ *
+ * This class handles the registration of {@link com.nitnelave.xmlparser.XMLNode}s and listeners,
+ * and takes care of the actual parsing.
  *
  * @author nitnelave
  * @see XMLProperty
