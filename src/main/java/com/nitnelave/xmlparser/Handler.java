@@ -28,25 +28,21 @@ class Handler extends DefaultHandler
         ParserNode node = xmlParser.getNode(qName);
         if (node == null)
             throw new SAXException("Unknown XML tag: " + qName);
-        else
-        {
+        if (node.isRoot() && !stack.isEmpty())
+            throw new SAXException("Root node " + node.getName()
+                                   + " as child of another node: " + peek().getClass().getName());
+        Class<?> superClazz = node.getSuperClazz();
+        if (node.hasParent()
+            && !superClazz.equals(peek().getClass()))
+            throw new SAXException("Invalid XML architecture: " + node.getName() + " as child of a " +
+                                   xmlParser.getNodeForClass(peek().getClass()).getName() + ". " +
+                                   xmlParser.getNodeForClass(superClazz).getName() + " expected.");
 
-            if (node.isRoot() && !stack.isEmpty())
-                throw new SAXException("Root node " + node.getName()
-                                       + " as child of another node: " + peek().getClass().getName());
-            Class<?> superClazz = node.getSuperClazz();
-            if (node.hasParent()
-                && !superClazz.equals(peek().getClass()))
-                throw new SAXException("Invalid XML architecture: " + node.getName() + " as child of a " +
-                                       xmlParser.getNodeForClass(peek().getClass()).getName() + ". " +
-                                       xmlParser.getNodeForClass(superClazz).getName() + " expected.");
+        push(new StackElement(node, Reflect.newInstance(node.getClazz())));
+        getProperties(node, attributes);
+        for (Object o : node.getBeginHandlers())
+            Reflect.call(o, "handleBegin", peek());
 
-            push(new StackElement(node.hasContent() ? new StringBuilder() : null,
-                                  Reflect.newInstance(node.getClazz())));
-            getProperties(node, attributes);
-            for (Object o : node.getBeginHandlers())
-                Reflect.call(o, "handleBegin", peek());
-        }
     }
 
     private void getProperties(ParserNode node, Attributes attributes)
