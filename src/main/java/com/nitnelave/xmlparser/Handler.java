@@ -13,8 +13,7 @@ import java.util.List;
 class Handler extends DefaultHandler
 {
     private final XMLParser xmlParser;
-    private final List<Object> stack = new ArrayList<>();
-    private StringBuilder buff = null;
+    private final List<StackElement> stack = new ArrayList<>();
 
     public Handler(XMLParser xmlParser)
     {
@@ -26,7 +25,6 @@ class Handler extends DefaultHandler
     public void startElement(String uri, String localName, String qName, Attributes attributes)
     throws SAXException
     {
-        buff = new StringBuilder();
         ParserNode node = xmlParser.getNode(qName);
         if (node == null)
             throw new SAXException("Unknown XML tag: " + qName);
@@ -43,7 +41,8 @@ class Handler extends DefaultHandler
                                        xmlParser.getNodeForClass(peek().getClass()).getName() + ". " +
                                        xmlParser.getNodeForClass(superClazz).getName() + " expected.");
 
-            push(Reflect.newInstance(node.getClazz()));
+            push(new StackElement(node.hasContent() ? new StringBuilder() : null,
+                                  Reflect.newInstance(node.getClazz())));
             getProperties(node, attributes);
             for (Object o : node.getBeginHandlers())
                 Reflect.call(o, "handleBegin", peek());
@@ -71,7 +70,7 @@ class Handler extends DefaultHandler
     public void characters(char[] ch, int start, int length)
     throws SAXException
     {
-        buff.append(new String(ch, start, length).trim());
+        getLastElement().append(new String(ch, start, length).trim());
     }
 
     @Override
@@ -81,7 +80,7 @@ class Handler extends DefaultHandler
         Object last = peek();
         ParserNode lastNode = xmlParser.getNodeForClass(last.getClass());
         if (lastNode.hasContent())
-            Reflect.setString(peek(), "Content", lastNode.getValueClazz(), buff.toString());
+            Reflect.setString(last, "Content", lastNode.getValueClazz(), getLastElement().getContent());
         pop();
 
 
@@ -90,12 +89,17 @@ class Handler extends DefaultHandler
         lastNode.call(last);
     }
 
-    private void push(Object o)
+    private void push(StackElement o)
     {
         stack.add(o);
     }
 
     private Object peek()
+    {
+        return getLastElement().node;
+    }
+
+    private StackElement getLastElement()
     {
         return stack.get(stack.size() - 1);
     }
@@ -103,5 +107,30 @@ class Handler extends DefaultHandler
     private void pop()
     {
         stack.remove(stack.size() - 1);
+    }
+
+    private class StackElement
+    {
+        private final StringBuilder builder;
+        private final Object node;
+
+        private StackElement(StringBuilder builder, Object node)
+        {
+            this.builder = builder;
+            this.node = node;
+        }
+
+        public void append(String content)
+        {
+            if (builder != null)
+                builder.append(content);
+        }
+
+        public String getContent()
+        {
+            if (builder == null)
+                return "";
+            return builder.toString();
+        }
     }
 }
