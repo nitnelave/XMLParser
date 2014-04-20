@@ -11,9 +11,9 @@ import java.lang.annotation.*;
  * <ul>
  * <li>Root nodes, defined by {@code parentNode = RootNode.class}.
  * Root nodes cannot have parents, and will raise an exception if read as an inner node.</li>
- * <li>Generic child nodes, defined by {@code parentNode = {@link None}.class}.
+ * <li>Generic child nodes, defined by {@code parentNode = None.class}.
  * These can have parents of any type.</li>
- * <li>Default node, defined by {@code parentNode = {@link DefaultNode}.class}. It must be unique.
+ * <li>Default node, defined by {@code parentNode = DefaultNode.class}. It must be unique.
  * If an unknown XML tag is recognized, a default node is created.
  * Its name attribute will be ignored, but if the class provides a {@code setName(String name)} method,
  * it will be called with the name of the tag.
@@ -28,16 +28,22 @@ import java.lang.annotation.*;
  * Upon reading the closing tag, the handle(MyNode n) will be called for every applicable registered listener.
  * At this point, the node has all information available: properties, content, and sub-nodes.
  * </p>
- * <H3>Warning</H3>
+ * <p>
+ *     If a node is missing a property marked required, any corresponding XML tag missing the property
+ * will raise an exception upon parsing.
+ * </p>
+ * <H4>Constructors</H4>
  * <ul>
  * <li>The XML nodes will be created with the empty constructor. Make sure to provide a meaningful one.</li>
  * <li>The classes for the node content and the properties must have a constructor taking a {@code String} as unique
  * parameter. For a simple number, use {@code Integer.class}.</li>
- * <li>If a node is missing a property marked required, any corresponding XML tag missing the property
- * will raise an exception upon parsing.</li>
  * </ul>
  *
  * @author nitnelave
+ * @see com.nitnelave.xmlparser.XMLParser
+ * @see com.nitnelave.xmlparser.XMLProperty
+ * @see com.nitnelave.xmlparser.XMLProperties
+ * @see com.nitnelave.xmlparser.XMLStructureException
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

@@ -116,8 +116,8 @@
  * And that's it! You can add more nodes, more properties, a more complex hierarchy, but it's as simple as that.
  * </p>
  * @author nitnelave
- * @see com.nitnelave.xmlparser.XMLParser The class used for parsing and registering the structure and listeners.
- * @see com.nitnelave.xmlparser.XMLNode The annotation to describe the document's structure.
- * @see com.nitnelave.xmlparser.XMLProperty The annotation to describe a node's properties.
+ * @see com.nitnelave.xmlparser.XMLParser
+ * @see com.nitnelave.xmlparser.XMLNode
+ * @see com.nitnelave.xmlparser.XMLProperty
  */
 package com.nitnelave.xmlparser;

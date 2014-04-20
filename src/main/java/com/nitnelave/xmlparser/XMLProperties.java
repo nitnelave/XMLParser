@@ -5,8 +5,19 @@ import java.lang.annotation.*;
 /**
  * Annotation to describe XML node properties.
  * <p>
- * This annotation allows to define the properties of an XML node, i.e. the name and age properties of the tag <br />
- * &lt;Person age="3" name="Arthur"&gt;
+ * This annotation allows to define the properties of an XML node,
+ * e.g. the "name" and "age" properties of the tag <br />
+ * &lt;Person age="3" name="Arthur" /&gt;
+ * </p>
+ * <p>
+ * This annotation is just a placeholder to allow to define several
+ * {@link com.nitnelave.xmlparser.XMLProperty} for a {@link com.nitnelave.xmlparser.XMLNode}.
+ * The syntax is as such:
+ * <pre>
+ *     &#64;XMLProperties({&#64;XMLProperty( ... ),
+ *                     &#64;XMLProperty( ... )})
+ *     public class Foo { ... }
+ * </pre>
  * </p>
  *
  * @author nitnelave

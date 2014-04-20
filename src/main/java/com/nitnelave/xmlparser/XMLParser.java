@@ -19,7 +19,6 @@ import java.util.Collection;
  * @author nitnelave
  * @see XMLProperty
  * @see XMLNode
- * @see XMLStructureException
  */
 public class XMLParser
 {
