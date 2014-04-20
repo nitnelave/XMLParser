@@ -14,7 +14,7 @@ class Handler extends DefaultHandler
 {
     private final XMLParser xmlParser;
     private final List<Object> stack = new ArrayList<>();
-    private StringBuffer buff = null;
+    private StringBuilder buff = null;
 
     public Handler(XMLParser xmlParser)
     {
@@ -26,7 +26,7 @@ class Handler extends DefaultHandler
     public void startElement(String uri, String localName, String qName, Attributes attributes)
     throws SAXException
     {
-        buff = new StringBuffer();
+        buff = new StringBuilder();
         ParserNode node = xmlParser.getNode(qName);
         if (node == null)
             throw new SAXException("Unknown XML tag: " + qName);
