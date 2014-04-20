@@ -23,6 +23,7 @@ final class Reflect
 
     public static void setString(Object o, String name, Class<?> valueClass, String value)
     {
+        Object instance = null;
         if (value == null)
         {
             throw new IllegalArgumentException();
@@ -30,23 +31,19 @@ final class Reflect
         try
         {
             Constructor<?> con = valueClass.getConstructor(String.class);
-            set(o, name, valueClass, con.newInstance(value));
+            instance = con.newInstance(value);
         } catch (NoSuchMethodException
                 | InvocationTargetException
                 | InstantiationException
                 | IllegalAccessException ignored)
         {
         }
+        set(o, name, valueClass, instance);
     }
 
     private static void set(Object o, String name, Class<?> valueClass, Object value)
     {
-        if (value == null)
-        {
-            throw new IllegalArgumentException();
-        }
         Class<?> clazz = o.getClass();
-
         try
         {
             Method m = clazz.getMethod("set" + name, valueClass);
