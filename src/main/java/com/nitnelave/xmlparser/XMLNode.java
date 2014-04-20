@@ -78,6 +78,16 @@ public @interface XMLNode
     public Class<?> parentNode() default None.class;
 
     /**
+     * The arity of the node. <br />
+     * Determines the name of the method called when adding the node to its parent node. <br />
+     * If it is false (default), the name of the method is "add" + {@link #name() name}; <br />
+     * if true, it is "set" + {@link #name() name};
+     *
+     * @return True if it is a single node.
+     */
+    public boolean single() default false;
+
+    /**
      * The class of the (optional) content. <br />
      * This defines what object will be constructed from the content inside the XML tag.
      * If the contentType is not {@link None}, then the class must define a method setContent(String s).
@@ -87,12 +97,42 @@ public @interface XMLNode
     public Class<?> contentType() default None.class;
 
     /**
-     * The arity of the node. <br />
-     * Determines the name of the method called when adding the node to its parent node. <br />
-     * If it is false (default), the name of the method is "add" + {@link #name() name}; <br />
-     * if true, it is "set" + {@link #name() name};
-     *
-     * @return True if it is a single node.
+     * Whether to update the content when seeing a child.
+     * Whenever a child of the node is seen, update the content. This allows to see the position of
+     * inner child nodes inside the content.
+     * @return Whether to update the content when seeing a child.
      */
-    public boolean single() default false;
+    public boolean updateContent() default true;
+
+    /**
+     * Whether to reset the content when seeing a child.
+     * Whenever a child of the node is seen, reset the buffer (only applicable if updateContent = true).
+     * If that's the case, then the same text will not be reported twice when updating the content.
+     * <p />
+     * For example, for this file:
+     * <pre>
+     *     {@code
+     *     <Container>
+     *         The car is <color>red</color>. I like that car.
+     *     </Container>
+     *     }
+     * </pre>
+     * The content of Container is split by a child node. So calls to container will be:
+     * <ul>
+     *     <li>resetContent = true:
+     *     <ul>
+     *         <li>container.setContent("The car is ");</li>
+     *         <li>container.setColor(Color red);</li>
+     *         <li>container.setContent(". I like that car");</li>
+     *     </ul></li>
+     *     <li>resetContent = false:
+     *     <ul>
+     *         <li>container.setContent("The car is ");</li>
+     *         <li>container.setColor(Color red);</li>
+     *         <li>container.setContent("The car is . I like that car");</li>
+     *     </ul></li>
+     * </ul>
+     * @return Whether to update the content when seeing a child.
+     */
+    public boolean resetContent() default false;
 }

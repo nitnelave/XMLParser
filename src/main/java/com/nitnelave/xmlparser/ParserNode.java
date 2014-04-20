@@ -13,7 +13,8 @@ class ParserNode
     private final Class<?> superClazz;
     private final Class<?> valueClazz;
     private final boolean hasContent;
-    private final boolean hasParent;
+    private final boolean updateContent;
+    private final boolean resetContent;
     private final boolean isSingleNode;
     private final XMLNodeType type;
     private final Collection<ParserProperty> properties = new ArrayList<>();
@@ -36,8 +37,9 @@ class ParserNode
         valueClazz = node.contentType();
         isSingleNode = node.single();
         type = node.type();
+        updateContent = node.updateContent();
+        resetContent = node.resetContent();
         hasContent = (!valueClazz.equals(None.class));
-        hasParent = (!superClazz.equals(None.class));
         if (isRoot() && hasParent())
             throw new XMLStructureException(name + ": Trying to register a root node with a parent node");
         if (type == XMLNodeType.DEFAULT && hasParent())
@@ -149,5 +151,15 @@ class ParserNode
     public boolean hasParent()
     {
         return !superClazz.equals(None.class);
+    }
+
+    public boolean shouldUpdateContent()
+    {
+        return updateContent;
+    }
+
+    public boolean shouldResetContent()
+    {
+        return resetContent;
     }
 }

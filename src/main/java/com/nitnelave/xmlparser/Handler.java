@@ -31,6 +31,7 @@ class Handler extends DefaultHandler
         if (node.isRoot() && !stack.isEmpty())
             throw new SAXException("Root node " + node.getName()
                                    + " as child of another node: " + peek().getClass().getName());
+        updateContent(getLastElement());
         Class<?> superClazz = node.getSuperClazz();
         if (node.hasParent()
             && !superClazz.equals(peek().getClass()))
@@ -42,7 +43,18 @@ class Handler extends DefaultHandler
         getProperties(node, attributes);
         for (Object o : node.getBeginHandlers())
             Reflect.call(o, "handleBegin", peek());
+    }
 
+    private void updateContent(StackElement lastElement)
+    {
+        ParserNode node = lastElement.xmlNode;
+        if (node.hasContent() && node.shouldUpdateContent())
+        {
+            Object elem = lastElement.node;
+            Reflect.setString(elem, "Content", node.getValueClazz(), lastElement.getContent());
+            if (node.shouldResetContent())
+                lastElement.builder.setLength(0);
+        }
     }
 
     private void getProperties(ParserNode node, Attributes attributes)
@@ -73,8 +85,9 @@ class Handler extends DefaultHandler
     public void endElement(String uri, String localName, String qName)
     throws SAXException
     {
-        Object last = peek();
-        ParserNode lastNode = xmlParser.getNodeForClass(last.getClass());
+        StackElement element = getLastElement();
+        Object last = element.node;
+        ParserNode lastNode = element.xmlNode;
         if (lastNode.hasContent())
             Reflect.setString(last, "Content", lastNode.getValueClazz(), getLastElement().getContent());
         pop();
@@ -109,10 +122,12 @@ class Handler extends DefaultHandler
     {
         private final StringBuilder builder;
         private final Object node;
+        private final ParserNode xmlNode;
 
-        private StackElement(StringBuilder builder, Object node)
+        private StackElement(ParserNode xmlNode, Object node)
         {
-            this.builder = builder;
+            this.xmlNode = xmlNode;
+            builder = xmlNode.hasContent() ? new StringBuilder() : null;
             this.node = node;
         }
 
@@ -124,8 +139,7 @@ class Handler extends DefaultHandler
 
         public String getContent()
         {
-            if (builder == null)
-                return "";
+            assert builder != null;
             return builder.toString();
         }
     }
