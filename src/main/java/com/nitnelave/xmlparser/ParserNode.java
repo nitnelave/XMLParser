@@ -43,29 +43,32 @@ class ParserNode
                                                 " is missing the method setContent("
                                                 + valueClazz.getName() + ')');
         }
-        constructProperties();
-        if (superClazz.equals(DefaultNode.class))
+        boolean def = superClazz.equals(DefaultNode.class);
+        if (def)
             xmlParser.setDefaultNode(this);
         else if (name.isEmpty())
             throw new XMLStructureException("Nodes must define non-empty names, except for the default one.");
+        constructProperties(def);
     }
 
-    private void constructProperties()
+    private void constructProperties(boolean isDefault)
     throws XMLStructureException
     {
         XMLProperties prop = clazz.getAnnotation(XMLProperties.class);
         if (prop != null)
             for (XMLProperty p : prop.value())
-                registerProperty(p);
+                registerProperty(p, isDefault);
         XMLProperty sProp = clazz.getAnnotation(XMLProperty.class);
         if (sProp != null)
-            registerProperty(sProp);
+            registerProperty(sProp, isDefault);
     }
 
-    private void registerProperty(XMLProperty property)
+    private void registerProperty(XMLProperty property, boolean isDefault)
     throws XMLStructureException
     {
-        if (!Reflect.hasMethod(clazz, "set" + property.name(), property.valueType()))
+        if (isDefault && property.required())
+            throw new XMLStructureException("Default node cannot have required properties.");
+        if (!isDefault && !Reflect.hasMethod(clazz, "set" + property.name(), property.valueType()))
             throw new XMLStructureException("XMLNode " + clazz.getName()
                                             + " is missing the method set" + property.name()
                                             + '(' + property.valueType().getName() + ')');
