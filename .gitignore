@@ -27,3 +27,5 @@ Makefile.in
 *.idea
 out
 target
+pom.xml.releaseBackup
+release.properties
