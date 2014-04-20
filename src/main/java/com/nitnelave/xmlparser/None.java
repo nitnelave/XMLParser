@@ -3,7 +3,7 @@ package com.nitnelave.xmlparser;
 /**
  * Dummy class for default value.
  * <p>
- * This is the dummy class to specify the root node or empty content.
+ * This is the dummy class used to specify a node with no content, or with any parent.
  * </p>
  *
  * @author nitnelave
