@@ -23,6 +23,7 @@ natural method names will allow a simple parsing in no time.
 Resources:
 * [Project homepage](https://github.com/nitnelave/XMLParser)
 * [Bug tracker](https://github.com/nitnelave/XMLParser)
+* [Javadoc](http://nitnelave.github.io/XMLParser)
 
 Usage
 -----
