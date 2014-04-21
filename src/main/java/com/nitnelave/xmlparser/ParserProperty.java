@@ -20,8 +20,8 @@ class ParserProperty
         if (!Reflect.hasStringConstructor(valueType))
         {
             throw new XMLStructureException(
-                    "Property " + name + ": value type " + valueType.getName() + " must implement constructor "
-                    + valueType.getName() + "(String s)"
+                    "Property " + name + ": value type " + valueType.getSimpleName() + " must implement constructor "
+                    + valueType.getSimpleName() + "(String)"
             );
         }
     }
