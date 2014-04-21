@@ -10,11 +10,19 @@ import com.nitnelave.xmlparser.XMLProperty;
 @XMLProperty(name = "Name", key = "name")
 public class TestChild
 {
+    private String name = "";
+
     public void setContent(String s)
     {
     }
 
     public void setName(String s)
     {
+        name = s;
+    }
+
+    public String getName()
+    {
+        return name;
     }
 }
