@@ -61,7 +61,7 @@ class Handler extends DefaultHandler
     {
         for (ParserProperty property : node.getProperties())
         {
-            String v = attributes.getValue(property.getPropertyName());
+            String v = attributes.getValue(property.getKey());
             if (v == null)
             {
                 if (!property.isOptional())

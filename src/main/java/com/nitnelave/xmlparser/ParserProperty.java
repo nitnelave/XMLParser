@@ -6,7 +6,7 @@ package com.nitnelave.xmlparser;
 class ParserProperty
 {
     private final String name;
-    private final String propertyName;
+    private final String key;
     private final Class<?> valueType;
     private final boolean isOptional;
 
@@ -14,7 +14,7 @@ class ParserProperty
     throws XMLStructureException
     {
         name = property.name();
-        propertyName = property.key();
+        key = property.key();
         valueType = property.valueType();
         isOptional = !property.required();
         if (!Reflect.hasStringConstructor(valueType))
@@ -31,9 +31,9 @@ class ParserProperty
         return name;
     }
 
-    public String getPropertyName()
+    public String getKey()
     {
-        return propertyName;
+        return key;
     }
 
     public Class<?> getValueType()
