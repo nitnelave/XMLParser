@@ -6,7 +6,7 @@ import com.github.nitnelave.xmlparser.XMLProperty;
 /**
  * @author nitnelave
  */
-@XMLNode(name = "A", parentNode = Name.class, contentType = String.class, updateContent = false)
+@XMLNode(name = "A", parentNodes = Name.class, contentType = String.class, updateContent = false)
 @XMLProperty(name = "HRef", key = "href", required = true)
 public class Link
 {

@@ -2,6 +2,7 @@ package com.github.nitnelave.xmlparser;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ class ParserNode
 {
     private final String name;
     private final Class<?> clazz;
-    private final Class<?> superClazz;
+    private final HashSet<Class<?>> superClazz = new HashSet<>();
     private final Class<?> valueClazz;
     private final boolean hasContent;
     private final boolean updateContent;
@@ -36,7 +37,8 @@ class ParserNode
             tmpName = clazz.getSimpleName();
         name = tmpName;
         this.clazz = clazz;
-        superClazz = node.parentNode();
+        for (Class<?> c : node.parentNodes())
+            superClazz.add(c);
         valueClazz = node.contentType();
         isSingleNode = node.single();
         type = node.type();
@@ -100,9 +102,9 @@ class ParserNode
         return clazz;
     }
 
-    public Class<?> getSuperClazz()
+    public boolean isSuperClazz(Class<?> c)
     {
-        return superClazz;
+        return superClazz.contains(c);
     }
 
     public Class<?> getValueClazz()
@@ -146,7 +148,7 @@ class ParserNode
 
     public boolean hasParent()
     {
-        return !superClazz.equals(None.class);
+        return !superClazz.isEmpty();
     }
 
     public boolean shouldUpdateContent()

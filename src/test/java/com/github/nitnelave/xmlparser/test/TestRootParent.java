@@ -6,7 +6,7 @@ import com.github.nitnelave.xmlparser.XMLNodeType;
 /**
  * @author nitnelave
  */
-@XMLNode(type = XMLNodeType.ROOT, parentNode = TestRoot.class)
+@XMLNode(type = XMLNodeType.ROOT, parentNodes = TestRoot.class)
 public class TestRootParent
 {
 }

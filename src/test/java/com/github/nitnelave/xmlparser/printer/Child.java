@@ -7,7 +7,7 @@ import com.github.nitnelave.xmlparser.XMLProperty;
 /**
  * @author nitnelave
  */
-@XMLNode(parentNode = Person.class)
+@XMLNode(parentNodes = Person.class)
 @XMLProperties({@XMLProperty(name = "Id", key = "id", valueType = Integer.class, required = true),
                 @XMLProperty(name = "Age", key = "age", valueType = Integer.class)})
 public class Child

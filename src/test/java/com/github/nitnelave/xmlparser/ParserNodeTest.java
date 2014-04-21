@@ -149,19 +149,17 @@ public class ParserNodeTest
     }
 
     @Test
-    public void testGetSuperClazz1()
+    public void testIsSuperClazz1()
     throws XMLStructureException
     {
-        Assert.assertEquals("Wrong class: ", "None", new ParserNode(parser, TestRoot.class)
-                .getSuperClazz().getSimpleName());
+        Assert.assertFalse(new ParserNode(parser, TestRoot.class).isSuperClazz(TestRoot.class));
     }
 
     @Test
-    public void testGetSuperClazz2()
+    public void testIsSuperClazz2()
     throws XMLStructureException
     {
-        Assert.assertEquals("Wrong class: ", "TestRoot", new ParserNode(parser, TestChild.class)
-                .getSuperClazz().getSimpleName());
+        Assert.assertTrue(new ParserNode(parser, TestChild.class).isSuperClazz(TestRoot.class));
     }
 
     @Test

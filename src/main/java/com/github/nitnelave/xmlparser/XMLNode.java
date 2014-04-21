@@ -75,7 +75,7 @@ public @interface XMLNode
      *
      * @return The parent node's class
      */
-    public Class<?> parentNode() default None.class;
+    public Class<?>[] parentNodes() default {};
 
     /**
      * The arity of the node. <br />

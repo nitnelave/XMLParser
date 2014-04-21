@@ -33,12 +33,10 @@ class Handler extends DefaultHandler
                                    + " as child of another node: " + peek().getClass().getName());
         if (!stack.isEmpty())
             updateContent(getLastElement());
-        Class<?> superClazz = node.getSuperClazz();
         if (node.hasParent()
-            && !superClazz.equals(peek().getClass()))
+            && !node.isSuperClazz(peek().getClass()))
             throw new SAXException("Invalid XML architecture: " + node.getName() + " as child of a " +
-                                   xmlParser.getNodeForClass(peek().getClass()).getName() + ". " +
-                                   xmlParser.getNodeForClass(superClazz).getName() + " expected.");
+                                   xmlParser.getNodeForClass(peek().getClass()).getName());
         Object instance = Reflect.newInstance(node.getClazz());
         if (node.isDefault())
             Reflect.call(instance, "setName", qName);

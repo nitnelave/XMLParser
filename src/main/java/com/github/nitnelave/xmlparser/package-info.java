@@ -77,7 +77,7 @@
  *     // Although not required, the parentNode attribute allows to check that the direct parent is a person.
  *     // That way, the &lt;Child&gt; node cannot be parsed at the root, or as a subnode of any other node.
  *     // The "single" attribute defaults to false, so it is not necessary here
- *     &#64;XMLNode(parentNode = Person.class, contentType = String.class, single = false)
+ *     &#64;XMLNode(parentNodes = Person.class, contentType = String.class, single = false)
  *     &#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class)
  *     public class Child
  *     {

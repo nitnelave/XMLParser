@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author nitnelave
  */
-@XMLNode(single = true, contentType = String.class, resetContent = true)
+@XMLNode(single = true, contentType = String.class, resetContent = true, parentNodes = {Child.class, Person.class})
 public class Name
 {
     List<Object> content = new ArrayList<>();

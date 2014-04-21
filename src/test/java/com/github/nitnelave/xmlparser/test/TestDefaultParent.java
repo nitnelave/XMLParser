@@ -6,7 +6,7 @@ import com.github.nitnelave.xmlparser.XMLNodeType;
 /**
  * @author nitnelave
  */
-@XMLNode(type = XMLNodeType.DEFAULT, parentNode = TestRoot.class)
+@XMLNode(type = XMLNodeType.DEFAULT, parentNodes = TestRoot.class)
 public class TestDefaultParent
 {
 }
