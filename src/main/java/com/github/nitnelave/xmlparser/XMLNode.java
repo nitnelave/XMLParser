@@ -70,10 +70,10 @@ public @interface XMLNode
     public XMLNodeType type() default XMLNodeType.NORMAL;
 
     /**
-     * The class of the parent node in the XML structure. <br />
-     * If the class is {@link None} (by default), then the node can have any node as parent.
+     * The classes of valid parent node in the XML structure. <br />
+     * If omitted, the node can have any parent.
      *
-     * @return The parent node's class
+     * @return The parent nodes' classes
      */
     public Class<?>[] parentNodes() default {};
 
