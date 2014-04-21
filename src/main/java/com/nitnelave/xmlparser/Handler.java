@@ -50,7 +50,7 @@ class Handler extends DefaultHandler
         if (node.hasContent() && node.shouldUpdateContent())
         {
             Object elem = lastElement.node;
-            Reflect.setString(elem, "Content", node.getValueClazz(), lastElement.getContent());
+            Reflect.setFromString(elem, "Content", node.getValueClazz(), lastElement.getContent());
             if (node.shouldResetContent())
                 lastElement.builder.setLength(0);
         }
@@ -69,7 +69,7 @@ class Handler extends DefaultHandler
                                                          node.getName(), property.getName()));
             }
             else
-                Reflect.setString(peek(), property.getName(), property.getValueType(), v);
+                Reflect.setFromString(peek(), property.getName(), property.getValueType(), v);
         }
     }
 
@@ -88,7 +88,7 @@ class Handler extends DefaultHandler
         Object last = element.node;
         ParserNode lastNode = element.xmlNode;
         if (lastNode.hasContent())
-            Reflect.setString(last, "Content", lastNode.getValueClazz(), getLastElement().getContent());
+            Reflect.setFromString(last, "Content", lastNode.getValueClazz(), getLastElement().getContent());
         pop();
 
 
