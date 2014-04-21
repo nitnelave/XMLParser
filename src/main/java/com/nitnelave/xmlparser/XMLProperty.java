@@ -64,7 +64,7 @@ public @interface XMLProperty
      *
      * @return The data class.
      */
-    public Class<?> valueType();
+    public Class<?> valueType() default String.class;
 
     /**
      * Property required flag.
