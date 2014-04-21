@@ -60,8 +60,6 @@ public class ParsingTest
     throws IOException, ParserConfigurationException, SAXException
     {
         parseFile(PREFIX + input);
-        System.out.println(PREFIX + report);
-        System.out.println(reporter.getReport());
         Assert.assertEquals("Printer failed: ", readFile(PREFIX + ref), printer.getXML());
         Assert.assertEquals("Report failed: ", readFile(PREFIX + report), reporter.getReport());
     }
