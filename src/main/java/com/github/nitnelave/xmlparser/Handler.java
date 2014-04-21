@@ -78,7 +78,7 @@ class Handler extends DefaultHandler
     public void characters(char[] ch, int start, int length)
     throws SAXException
     {
-        getLastElement().append(new String(ch, start, length).trim());
+        getLastElement().append(new String(ch, start, length));
     }
 
     @Override
