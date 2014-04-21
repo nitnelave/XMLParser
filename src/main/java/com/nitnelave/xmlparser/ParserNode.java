@@ -19,7 +19,9 @@ class ParserNode
     private final boolean isSingleNode;
     private final XMLNodeType type;
     private final List<ParserProperty> properties = new ArrayList<>();
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection") // The IDE does not detect access through ternary
     private final Collection<Object> handlerList = new ArrayList<>();
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private Collection<Object> beginHandlers = new ArrayList<>();
 
     public ParserNode(XMLParser xmlParser, Class<?> clazz)
