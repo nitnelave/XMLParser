@@ -47,7 +47,7 @@ class ParserNode
             throw new XMLStructureException(name + ": Trying to register a default node with a parent node");
         if (hasContent)
         {
-            if (!Reflect.hasStringConstructor(valueClazz))
+            if (!Reflect.hasConstructor(valueClazz, String.class))
                 throw new XMLStructureException("XMLNode " + name + ": content type "
                                                 + valueClazz.getSimpleName()
                                                 + " must implement constructor "

@@ -17,7 +17,7 @@ class ParserProperty
         key = property.key();
         valueType = property.valueType();
         isOptional = !property.required();
-        if (!Reflect.hasStringConstructor(valueType))
+        if (!Reflect.hasConstructor(valueType, String.class))
         {
             throw new XMLStructureException(
                     "Property " + name + ": value type " + valueType.getSimpleName() + " must implement constructor "

@@ -11,6 +11,12 @@ import java.lang.reflect.Method;
  */
 final class Reflect
 {
+    /**
+     * Create a new instance of the class.
+     * @param clazz The class to instantiate
+     * @return The new instance
+     * @throws SAXException if the instantiation failed
+     */
     public static Object newInstance(Class<?> clazz)
     throws SAXException
     {
@@ -19,7 +25,7 @@ final class Reflect
             return clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException ignored)
         {
-            throw new SAXException("Could not instantiate class " + clazz.getName());
+            throw new SAXException("Could not instantiate class " + clazz.getSimpleName());
         }
     }
 
@@ -46,36 +52,29 @@ final class Reflect
         }
     }
 
-    private static void set(Object o, String name, Class<?> valueClass, Object value)
+    /**
+     * Call the given method on the target with the single argument arg.
+     * Fails silently if there is a problem.
+     * @param target The target of the call
+     * @param methodName The method's name
+     * @param arg The argument
+     */
+    public static void call(Object target, String methodName, Object arg)
     {
-        Class<?> clazz = o.getClass();
         try
         {
-            Method m = clazz.getMethod("set" + name, valueClass);
-            m.invoke(o, value);
+            Method method = target.getClass().getMethod(methodName, arg.getClass());
+            method.invoke(target, arg);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored)
         {
         }
     }
 
-    public static void call(Object handler, String methodName, Object o)
-    {
-        Class<?> clazz = o.getClass();
-        Class<?> handlerClazz = handler.getClass();
-        try
-        {
-            Method method = handlerClazz.getMethod(methodName, clazz);
-            method.invoke(handler, o);
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored)
-        {
-        }
-    }
-
-    public static boolean hasMethod(Class<?> c, String methodName, Class<?> arg)
+    public static boolean hasMethod(Class<?> c, String methodName, Class<?>... args)
     {
         try
         {
-            c.getMethod(methodName, arg);
+            c.getMethod(methodName, args);
             return true;
         } catch (NoSuchMethodException e)
         {
@@ -83,11 +82,11 @@ final class Reflect
         }
     }
 
-    public static boolean hasStringConstructor(Class<?> valueType)
+    public static boolean hasConstructor(Class<?> valueType, Class<?>... params)
     {
         try
         {
-            valueType.getConstructor(String.class);
+            valueType.getConstructor(params);
             return true;
         } catch (NoSuchMethodException e)
         {
