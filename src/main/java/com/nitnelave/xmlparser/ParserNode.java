@@ -2,6 +2,7 @@ package com.nitnelave.xmlparser;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author nitnelave
@@ -17,7 +18,7 @@ class ParserNode
     private final boolean resetContent;
     private final boolean isSingleNode;
     private final XMLNodeType type;
-    private final Collection<ParserProperty> properties = new ArrayList<>();
+    private final List<ParserProperty> properties = new ArrayList<>();
     private final Collection<Object> handlerList = new ArrayList<>();
     private Collection<Object> beginHandlers = new ArrayList<>();
 
@@ -112,7 +113,7 @@ class ParserNode
         return hasContent;
     }
 
-    public Collection<ParserProperty> getProperties()
+    public List<ParserProperty> getProperties()
     {
         return properties;
     }
@@ -134,11 +135,6 @@ class ParserNode
     public void registerParent(Object child, Object parent)
     {
         Reflect.call(parent, (isSingleNode ? "set" : "add") + getName(), child);
-    }
-
-    public Iterable<Object> getBeginHandlers()
-    {
-        return beginHandlers;
     }
 
     public boolean isRoot()
