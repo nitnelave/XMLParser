@@ -63,7 +63,8 @@ public class ParserNodeTest
             Assert.assertEquals("Wrong error message: ",
                                 "TestRootParent: " +
                                 "Trying to register a root node with a parent node",
-                                e.getMessage());
+                                e.getMessage()
+                               );
         }
     }
 
@@ -80,7 +81,8 @@ public class ParserNodeTest
             Assert.assertEquals("Wrong error message: ",
                                 "TestDefaultParent: " +
                                 "Trying to register a default node with a parent node",
-                                e.getMessage());
+                                e.getMessage()
+                               );
         }
     }
 
@@ -99,7 +101,8 @@ public class ParserNodeTest
                                 "TestContentNoConstructor " +
                                 "must implement constructor " +
                                 "TestContentNoConstructor(String)",
-                                e.getMessage());
+                                e.getMessage()
+                               );
         }
     }
 
@@ -117,7 +120,8 @@ public class ParserNodeTest
             Assert.assertEquals("Wrong error message: ",
                                 "XMLNode TestContentNoSetter is missing the method " +
                                 "setContent(TestContentNoSetter)",
-                                e.getMessage());
+                                e.getMessage()
+                               );
         }
     }
 

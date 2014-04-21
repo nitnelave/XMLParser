@@ -13,7 +13,6 @@ final class Reflect
 {
     public static Object newInstance(Class<?> clazz)
     throws SAXException
-
     {
         try
         {
@@ -27,9 +26,7 @@ final class Reflect
     public static void setString(Object o, String name, Class<?> valueClass, String value)
     {
         if (value == null)
-        {
             throw new IllegalArgumentException();
-        }
         Object instance = null;
         try
         {

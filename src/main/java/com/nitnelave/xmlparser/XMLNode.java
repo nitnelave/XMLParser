@@ -100,6 +100,7 @@ public @interface XMLNode
      * Whether to update the content when seeing a child.
      * Whenever a child of the node is seen, update the content. This allows to see the position of
      * inner child nodes inside the content.
+     *
      * @return Whether to update the content when seeing a child.
      */
     public boolean updateContent() default true;
@@ -108,7 +109,7 @@ public @interface XMLNode
      * Whether to reset the content when seeing a child.
      * Whenever a child of the node is seen, reset the buffer (only applicable if updateContent = true).
      * If that's the case, then the same text will not be reported twice when updating the content.
-     * <p />
+     * <p/>
      * For example, for this file:
      * <pre>
      *     {@code
@@ -119,19 +120,20 @@ public @interface XMLNode
      * </pre>
      * The content of Container is split by a child node. So calls to container will be:
      * <ul>
-     *     <li>resetContent = true:
-     *     <ul>
-     *         <li>container.setContent("The car is ");</li>
-     *         <li>container.setColor(Color red);</li>
-     *         <li>container.setContent(". I like that car");</li>
-     *     </ul></li>
-     *     <li>resetContent = false:
-     *     <ul>
-     *         <li>container.setContent("The car is ");</li>
-     *         <li>container.setColor(Color red);</li>
-     *         <li>container.setContent("The car is . I like that car");</li>
-     *     </ul></li>
+     * <li>resetContent = true:
+     * <ul>
+     * <li>container.setContent("The car is ");</li>
+     * <li>container.setColor(Color red);</li>
+     * <li>container.setContent(". I like that car");</li>
+     * </ul></li>
+     * <li>resetContent = false:
+     * <ul>
+     * <li>container.setContent("The car is ");</li>
+     * <li>container.setColor(Color red);</li>
+     * <li>container.setContent("The car is . I like that car");</li>
+     * </ul></li>
      * </ul>
+     *
      * @return Whether to update the content when seeing a child.
      */
     public boolean resetContent() default false;

@@ -38,7 +38,8 @@ public class ParserPropertyTest
         {
             Assert.assertEquals("Wrong exception message: ",
                                 "Property Prop: value type TestPropertyNoConstructor must implement " +
-                                "constructor TestPropertyNoConstructor(String)", e.getMessage());
+                                "constructor TestPropertyNoConstructor(String)", e.getMessage()
+                               );
         }
     }
 
