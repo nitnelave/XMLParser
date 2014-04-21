@@ -1,0 +1,8 @@
+<Person id="42">
+    <name />
+    <Child id="3" />
+    <Child id="4" age="51" />
+    <Child id="4">
+        <name />
+    </Child>
+</Person>

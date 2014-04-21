@@ -37,9 +37,12 @@ public class Child
         b.append("    <Child id=\"").append(id).append('"');
         if (age != null)
             b.append(" age=\"").append(age).append('"');
-        b.append('>').append(System.lineSeparator()).append("        ")
-         .append(name.toString()).append(System.lineSeparator())
-         .append("    </Child>").append(System.lineSeparator());
+        if (name != null)
+            b.append('>').append(System.lineSeparator()).append("        ")
+             .append(name.toString()).append(System.lineSeparator())
+             .append("    </Child>").append(System.lineSeparator());
+        else
+            b.append(" />").append(System.lineSeparator());
         return b.toString();
     }
 }

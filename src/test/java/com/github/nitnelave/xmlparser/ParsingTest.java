@@ -15,6 +15,7 @@ import java.io.IOException;
 /**
  * @author nitnelave
  */
+@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 public class ParsingTest
 {
     private XMLParser parser = null;
@@ -44,7 +45,7 @@ public class ParsingTest
     throws IOException
     {
         StringBuilder builder = new StringBuilder();
-        try(BufferedReader reader = new BufferedReader(new FileReader(path)))
+        try (BufferedReader reader = new BufferedReader(new FileReader(path)))
         {
             String s;
             //noinspection NestedAssignment
@@ -54,13 +55,48 @@ public class ParsingTest
         return builder.toString();
     }
 
+    private void testFile(String input, String ref, String report)
+    throws IOException, ParserConfigurationException, SAXException
+    {
+        parseFile(input);
+        System.out.println(report);
+        System.out.println(reporter.getReport());
+        Assert.assertEquals("Printer failed: ", readFile(ref), printer.getXML());
+        Assert.assertEquals("Report failed: ", readFile(report), reporter.getReport());
+    }
+
+    private void testFile(String file)
+    throws ParserConfigurationException, SAXException, IOException
+    {
+        String f = "src/test/resources/" + file + '.';
+        testFile(f + "xml", f + "xml", f + "report");
+    }
+
     @Test
     public void testSimple()
     throws Exception
     {
-        String filename = "src/test/resources/simple.xml";
-        parseFile(filename);
-        Assert.assertEquals("Printer failed: ", readFile(filename), printer.getXML());
-        System.out.println(reporter.getReport());
+        testFile("simple");
+    }
+
+    @Test
+    public void testChildren()
+    throws Exception
+    {
+        testFile("children");
+    }
+
+    @Test
+    public void testContent()
+    throws Exception
+    {
+        testFile("content");
+    }
+
+    @Test
+    public void testMixedContent()
+    throws Exception
+    {
+        testFile("mixed-content");
     }
 }

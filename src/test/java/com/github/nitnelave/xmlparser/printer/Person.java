@@ -28,6 +28,11 @@ public class Person
         this.name = name;
     }
 
+    public void addChild(Child child)
+    {
+        children.add(child);
+    }
+
     public String toString()
     {
         StringBuilder b = new StringBuilder();
