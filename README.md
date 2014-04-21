@@ -34,11 +34,13 @@ needed, as well as an example in the package documentation.
 Using Maven:
 
 Add the project as a dependency in your pom.xml:
+```html
 <dependency>
   <groupId>com.nitnelave.xmlparser</groupId>
   <artifactId>xmlparser</artifactId>
   <version>/* insert the latest version number here */</version>
 </dependency>
+```
 
 Manually:
 
