@@ -30,7 +30,7 @@ final class Reflect
     }
 
     /**
-     * Call the method set + name of the object o with a new instance of valueClass built with the value.
+     * Call the method "set" + name of the object o with a new instance of valueClass built with the value.
      * Fails silently if there is a problem.
      * @param o The target
      * @param name The name of the setter, without "set"
