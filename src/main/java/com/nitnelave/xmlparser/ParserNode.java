@@ -114,7 +114,7 @@ class ParserNode
         return hasContent;
     }
 
-    public Iterable<ParserProperty> getProperties()
+    public Collection<ParserProperty> getProperties()
     {
         return properties;
     }
