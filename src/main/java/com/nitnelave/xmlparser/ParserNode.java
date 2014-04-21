@@ -120,7 +120,7 @@ class ParserNode
 
     public void call(Object last, boolean begin)
     {
-        for (Object o : handlerList)
+        for (Object o : begin ? beginHandlers : handlerList)
             Reflect.call(o, begin ? "handleBegin" : "handle", last);
     }
 
