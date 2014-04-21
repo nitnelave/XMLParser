@@ -119,10 +119,10 @@ class ParserNode
         return properties;
     }
 
-    public void call(Object last)
+    public void call(Object last, boolean begin)
     {
         for (Object o : handlerList)
-            Reflect.call(o, "handle", last);
+            Reflect.call(o, begin ? "handleBegin" : "handle", last);
     }
 
     public void addListener(Object handler)

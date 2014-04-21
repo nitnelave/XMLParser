@@ -41,8 +41,7 @@ class Handler extends DefaultHandler
 
         push(new StackElement(node, Reflect.newInstance(node.getClazz())));
         getProperties(node, attributes);
-        for (Object o : node.getBeginHandlers())
-            Reflect.call(o, "handleBegin", peek());
+        node.call(peek(), true);
     }
 
     private void updateContent(StackElement lastElement)
@@ -95,7 +94,7 @@ class Handler extends DefaultHandler
 
         if (!stack.isEmpty())
             lastNode.registerParent(last, peek());
-        lastNode.call(last);
+        lastNode.call(last, false);
     }
 
     private void push(StackElement o)
