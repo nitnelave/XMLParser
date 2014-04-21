@@ -127,9 +127,9 @@ class ParserNode
 
     public void addListener(Object handler)
     {
-        if (Reflect.hasMethod(clazz, "handle", getClazz()))
+        if (Reflect.hasMethod(handler.getClass(), "handle", getClazz()))
             handlerList.add(handler);
-        if (Reflect.hasMethod(clazz, "handleBegin", getClazz()))
+        if (Reflect.hasMethod(handler.getClass(), "handleBegin", getClazz()))
             beginHandlers.add(handler);
     }
 
