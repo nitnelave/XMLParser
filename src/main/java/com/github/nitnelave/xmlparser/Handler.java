@@ -39,8 +39,10 @@ class Handler extends DefaultHandler
             throw new SAXException("Invalid XML architecture: " + node.getName() + " as child of a " +
                                    xmlParser.getNodeForClass(peek().getClass()).getName() + ". " +
                                    xmlParser.getNodeForClass(superClazz).getName() + " expected.");
-
-        push(new StackElement(node, Reflect.newInstance(node.getClazz())));
+        Object instance = Reflect.newInstance(node.getClazz());
+        if (node.isDefault())
+            Reflect.call(instance, "setName", qName);
+        push(new StackElement(node, instance));
         getProperties(node, attributes);
         node.call(peek(), true);
     }

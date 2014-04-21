@@ -158,4 +158,9 @@ class ParserNode
     {
         return resetContent;
     }
+
+    public boolean isDefault()
+    {
+        return type == XMLNodeType.DEFAULT;
+    }
 }
