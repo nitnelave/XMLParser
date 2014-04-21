@@ -21,6 +21,7 @@ public class ParsingTest
     private XMLParser parser = null;
     private XMLPrinter printer = null;
     private XMLReport reporter = null;
+    private static final String PREFIX = "src/test/resources/";
 
     @Before
     public void setUp()
@@ -58,18 +59,17 @@ public class ParsingTest
     private void testFile(String input, String ref, String report)
     throws IOException, ParserConfigurationException, SAXException
     {
-        parseFile(input);
-        System.out.println(report);
+        parseFile(PREFIX + input);
+        System.out.println(PREFIX + report);
         System.out.println(reporter.getReport());
-        Assert.assertEquals("Printer failed: ", readFile(ref), printer.getXML());
-        Assert.assertEquals("Report failed: ", readFile(report), reporter.getReport());
+        Assert.assertEquals("Printer failed: ", readFile(PREFIX + ref), printer.getXML());
+        Assert.assertEquals("Report failed: ", readFile(PREFIX + report), reporter.getReport());
     }
 
     private void testFile(String file)
     throws ParserConfigurationException, SAXException, IOException
     {
-        String f = "src/test/resources/" + file + '.';
-        testFile(f + "xml", f + "xml", f + "report");
+        testFile(file + ".xml", file + ".xml", file + ".report");
     }
 
     @Test
@@ -98,5 +98,12 @@ public class ParsingTest
     throws Exception
     {
         testFile("mixed-content");
+    }
+
+    @Test
+    public void testUnknown()
+    throws Exception
+    {
+        testFile("unknown.xml", "unknown.ref", "unknown.report");
     }
 }
