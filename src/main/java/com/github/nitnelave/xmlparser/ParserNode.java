@@ -1,9 +1,8 @@
 package com.github.nitnelave.xmlparser;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * @author nitnelave
@@ -21,9 +20,9 @@ class ParserNode
     private final XMLNodeType type;
     private final List<ParserProperty> properties = new ArrayList<>();
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection") // The IDE does not detect access through ternary
-    private final Collection<Object> handlerList = new ArrayList<>();
+    private final Collection<NodeHandler> handlerList = new ArrayList<>();
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private Collection<Object> beginHandlers = new ArrayList<>();
+    private Collection<NodeHandler> beginHandlers = new ArrayList<>();
 
     public ParserNode(XMLParser xmlParser, Class<?> clazz)
     throws XMLStructureException
@@ -37,8 +36,7 @@ class ParserNode
             tmpName = clazz.getSimpleName();
         name = tmpName;
         this.clazz = clazz;
-        for (Class<?> c : node.parentNodes())
-            superClazz.add(c);
+        Collections.addAll(superClazz, node.parentNodes());
         valueClazz = node.contentType();
         isSingleNode = node.single();
         type = node.type();
@@ -124,16 +122,18 @@ class ParserNode
 
     public void call(Object last, boolean begin)
     {
-        for (Object o : begin ? beginHandlers : handlerList)
-            Reflect.call(o, begin ? "handleBegin" : "handle", last);
+        for (NodeHandler h : begin ? beginHandlers : handlerList)
+            h.call(last);
     }
 
     public void addListener(Object handler)
     {
-        if (Reflect.hasMethod(handler.getClass(), "handle", getClazz()))
-            handlerList.add(handler);
-        if (Reflect.hasMethod(handler.getClass(), "handleBegin", getClazz()))
-            beginHandlers.add(handler);
+        Method method = Reflect.getMethod(handler.getClass(), "handle", getClazz());
+        if (method != null)
+            handlerList.add(new NodeHandler(handler, method));
+        method = Reflect.getMethod(handler.getClass(), "handleBegin", getClazz());
+        if (method != null)
+            beginHandlers.add(new NodeHandler(handler, method));
     }
 
     public void registerParent(Object child, Object parent)
@@ -164,5 +164,27 @@ class ParserNode
     public boolean isDefault()
     {
         return type == XMLNodeType.DEFAULT;
+    }
+
+    private class NodeHandler
+    {
+        private final Object handler;
+        private final Method handle;
+
+        public NodeHandler(Object handler, Method handle)
+        {
+            this.handler = handler;
+            this.handle = handle;
+        }
+
+        public void call(Object target)
+        {
+            try
+            {
+                handle.invoke(handler, target);
+            } catch (IllegalAccessException | InvocationTargetException ignored)
+            {
+            }
+        }
     }
 }
