@@ -1,5 +1,6 @@
 package com.github.nitnelave.xmlparser;
 
+import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
@@ -9,23 +10,17 @@ class ParserProperty
 {
     private final String name;
     private final String key;
-    private final Class<?> valueType;
     private final boolean isOptional;
+    private final StringSetter setter;
 
-    public ParserProperty(XMLProperty property)
+    public ParserProperty(ParserNode parserNode, XMLProperty property)
     throws XMLStructureException
     {
         name = property.name();
         key = property.key();
-        valueType = property.valueType();
+        Class<?> valueType = property.valueType();
+        setter = new StringSetter(parserNode.getClazz(), name, valueType);
         isOptional = !property.required();
-        if (!Reflect.hasConstructor(valueType, String.class))
-        {
-            throw new XMLStructureException(
-                    "Property " + name + ": value type " + valueType.getSimpleName() + " must implement constructor "
-                    + valueType.getSimpleName() + "(String)"
-            );
-        }
     }
 
     public String getName()
@@ -38,13 +33,22 @@ class ParserProperty
         return key;
     }
 
-    public Class<?> getValueType()
-    {
-        return valueType;
-    }
-
     public boolean isOptional()
     {
         return isOptional;
+    }
+
+    public void set(Object instance, Attributes attributes)
+    throws SAXException
+    {
+        String v = attributes.getValue(getKey());
+        if (v == null)
+        {
+            if (!isOptional())
+                throw new SAXException(String.format("XMLNode %s is missing required property %s",
+                                                     instance.getClass().getSimpleName(), getName()));
+        }
+        else
+            setter.set(instance, v);
     }
 }

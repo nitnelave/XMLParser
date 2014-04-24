@@ -37,8 +37,8 @@ public class ParserPropertyTest
         } catch (XMLStructureException e)
         {
             Assert.assertEquals("Wrong exception message: ",
-                                "Property Prop: value type TestPropertyNoConstructor must implement " +
-                                "constructor TestPropertyNoConstructor(String)", e.getMessage()
+                                "Value type TestPropertyNoConstructor must implement constructor " +
+                                "TestPropertyNoConstructor(String)", e.getMessage()
                                );
         }
     }
@@ -57,22 +57,6 @@ public class ParserPropertyTest
     {
         ParserProperty p = getProperty(TestChild.class);
         Assert.assertEquals("Wrong key: ", "name", p.getKey());
-    }
-
-    @Test
-    public void testGetValueType1()
-    throws Exception
-    {
-        ParserProperty p = getProperty(TestChild.class);
-        Assert.assertEquals("Wrong value type: ", "String", p.getValueType().getSimpleName());
-    }
-
-    @Test
-    public void testGetValueType2()
-    throws Exception
-    {
-        ParserProperty p = getProperty(TestProperty.class);
-        Assert.assertEquals("Wrong value type: ", "Integer", p.getValueType().getSimpleName());
     }
 
     @Test

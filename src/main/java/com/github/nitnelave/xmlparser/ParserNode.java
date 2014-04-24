@@ -78,7 +78,7 @@ class ParserNode
             throw new XMLStructureException("XMLNode " + clazz.getSimpleName()
                                             + " is missing the method set" + property.name()
                                             + '(' + property.valueType().getSimpleName() + ')');
-        properties.add(new ParserProperty(property));
+        properties.add(new ParserProperty(this, property));
     }
 
 

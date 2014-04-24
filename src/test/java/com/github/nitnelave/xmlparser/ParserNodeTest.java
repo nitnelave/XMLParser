@@ -97,10 +97,8 @@ public class ParserNodeTest
         } catch (XMLStructureException e)
         {
             Assert.assertEquals("Wrong error message: ",
-                                "XMLNode TestContentNoConstructor: content type " +
-                                "TestContentNoConstructor " +
-                                "must implement constructor " +
-                                "TestContentNoConstructor(String)",
+                                "XMLNode: TestContentNoConstructor is missing setter setContent" +
+                                "(TestContentNoConstructor)",
                                 e.getMessage()
                                );
         }

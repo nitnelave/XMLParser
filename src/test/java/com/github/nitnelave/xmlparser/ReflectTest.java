@@ -1,7 +1,5 @@
 package com.github.nitnelave.xmlparser;
 
-import com.github.nitnelave.xmlparser.test.TestChild;
-import com.github.nitnelave.xmlparser.test.TestProperty;
 import com.github.nitnelave.xmlparser.test.TestRoot;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,25 +28,6 @@ public class ReflectTest
         {
             Assert.assertEquals("Could not instantiate class None", e.getMessage());
         }
-    }
-
-    @Test
-    public void testSetFromString1()
-    {
-        TestProperty property = new TestProperty();
-        Assert.assertEquals(0, property.getName());
-        Reflect.setFromString(property, "Name", Integer.class, "42");
-        //noinspection MagicNumber
-        Assert.assertEquals(42, property.getName());
-    }
-
-    @Test
-    public void testSetFromString2()
-    {
-        TestChild child = new TestChild();
-        Assert.assertEquals("", child.getName());
-        Reflect.setFromString(child, "Name", Integer.class, "42");
-        Assert.assertEquals("", child.getName());
     }
 
     @Test
