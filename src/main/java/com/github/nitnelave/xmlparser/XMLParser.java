@@ -1,5 +1,6 @@
 package com.github.nitnelave.xmlparser;
 
+import org.reflections.Reflections;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,6 +42,27 @@ public class XMLParser
             throws XMLStructureException
     {
         for (Class<?> clazz : nodes)
+            nodeList.add(new ParserNode(this, clazz));
+    }
+
+    /**
+     * Register all classes describing XML nodes in the given package.<br />
+     * This method searches in the classpath for the given package, then checks
+     * every class inside, and if the &#64;XMLNode annotation is present, the
+     * class is registered. As the whole package is searched, this method is
+     * slower than listing the classes.
+     *
+     * @param packageName
+     *         The package name.
+     * @throws XMLStructureException
+     *         if there is an architecture problem
+     * @see com.github.nitnelave.xmlparser.XMLStructureException
+     */
+    public void registerPackage(String packageName)
+            throws XMLStructureException
+    {
+        Reflections reflections = new Reflections(packageName);
+        for (Class<?> clazz : reflections.getTypesAnnotatedWith(XMLNode.class))
             nodeList.add(new ParserNode(this, clazz));
     }
 

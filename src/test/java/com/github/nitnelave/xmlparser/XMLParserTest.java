@@ -76,4 +76,20 @@ public class XMLParserTest
         ParserNode node = parser.getNodeForClass(Person.class);
         assertEquals(defaultNode, node);
     }
+
+    @Test
+    public void testRegisterNodes()
+    throws XMLStructureException
+    {
+        parser.registerNodes(Person.class);
+        assertEquals("Person", parser.getNode("Person").getName());
+    }
+
+    @Test
+    public void testRegisterPackage()
+    throws XMLStructureException
+    {
+        parser.registerPackage("com.github.nitnelave.xmlparser.printer");
+        assertEquals("Person", parser.getNode("Person").getName());
+    }
 }

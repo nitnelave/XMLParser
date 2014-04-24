@@ -28,7 +28,7 @@ public class ParsingTest
     throws XMLStructureException
     {
         parser = new XMLParser();
-        parser.registerNodes(Child.class, DefaultNode.class, Link.class, Name.class, Person.class);
+        parser.registerPackage("com.github.nitnelave.xmlparser.printer");
         printer = new XMLPrinter();
         reporter = new XMLReport();
         parser.registerListener(printer);
