@@ -14,7 +14,7 @@ class ParserNode
 {
     private final String name;
     private final Class<?> clazz;
-    private final HashSet<Class<?>> superClazz = new HashSet<>();
+    private final Collection<Class<?>> superClazz = new HashSet<>();
     private final Class<?> valueClazz;
     private final boolean hasContent;
     private final boolean updateContent;
