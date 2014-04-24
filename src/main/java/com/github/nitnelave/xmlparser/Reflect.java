@@ -70,12 +70,11 @@ final class Reflect
         }
     }
 
-    public static Method getMethod(Class<? extends Object> aClass, String method, Class<?>... clazz)
+    public static Method getMethod(Class<?> aClass, String method, Class<?>... clazz)
     {
         try
         {
-            Method m = aClass.getMethod(method, clazz);
-            return m;
+            return aClass.getMethod(method, clazz);
         } catch (NoSuchMethodException e)
         {
             return null;
