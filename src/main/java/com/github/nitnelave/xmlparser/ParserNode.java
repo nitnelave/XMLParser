@@ -1,5 +1,6 @@
 package com.github.nitnelave.xmlparser;
 
+import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -156,6 +157,13 @@ class ParserNode
     public boolean isDefault()
     {
         return type == XMLNodeType.DEFAULT;
+    }
+
+    public void setProperties(Object instance, Attributes attributes)
+    throws SAXException
+    {
+        for (ParserProperty property : properties)
+            property.set(instance, attributes);
     }
 
     public void setContent(Object target, String content, boolean update)

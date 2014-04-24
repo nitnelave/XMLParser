@@ -41,25 +41,8 @@ class Handler extends DefaultHandler
         if (node.isDefault())
             Reflect.call(instance, "setName", qName);
         push(new StackElement(node, instance));
-        getProperties(node, attributes);
+        node.setProperties(instance, attributes);
         node.call(peek(), true);
-    }
-
-    private void getProperties(ParserNode node, Attributes attributes)
-    throws SAXException
-    {
-        for (ParserProperty property : node.getProperties())
-        {
-            String v = attributes.getValue(property.getKey());
-            if (v == null)
-            {
-                if (!property.isOptional())
-                    throw new SAXException(String.format("XMLNode %s is missing required property %s",
-                                                         node.getName(), property.getName()));
-            }
-            else
-                Reflect.setFromString(peek(), property.getName(), property.getValueType(), v);
-        }
     }
 
     @Override
