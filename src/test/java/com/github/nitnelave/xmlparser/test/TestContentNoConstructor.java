@@ -8,4 +8,7 @@ import com.github.nitnelave.xmlparser.XMLNode;
 @XMLNode(contentType = TestContentNoConstructor.class)
 public class TestContentNoConstructor
 {
+    public void setContent(TestContentNoConstructor t)
+    {
+    }
 }
