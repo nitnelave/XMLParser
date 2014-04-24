@@ -28,7 +28,7 @@ public class XMLParser
     private static final SAXParserFactory PARSER_FACTORY = SAXParserFactory.newInstance();
 
     /**
-     * Register classes that describe XML Nodes.<br />
+     * Register classes that describe XML Nodes. <br />
      * If the classes do not have the &#64;XMLNode annotation, or there is a required method missing,
      * an XMLStructureException will be raised.
      *
@@ -46,7 +46,7 @@ public class XMLParser
     }
 
     /**
-     * Register all classes describing XML nodes in the given package.<br />
+     * Register all classes describing XML nodes in the given package. <br />
      * This method searches in the classpath for the given package, then checks
      * every class inside, and if the &#64;XMLNode annotation is present, the
      * class is registered. As the whole package is searched, this method is
