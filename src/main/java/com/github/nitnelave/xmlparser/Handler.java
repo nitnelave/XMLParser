@@ -32,7 +32,7 @@ class Handler extends DefaultHandler
             throw new SAXException("Root node " + node.getName()
                                    + " as child of another node: " + peek().getClass().getName());
         if (!stack.isEmpty())
-            updateContent(getLastElement());
+            getLastElement().setContent(true);
         if (node.hasParent()
             && !node.isSuperClazz(peek().getClass()))
             throw new SAXException("Invalid XML architecture: " + node.getName() + " as child of a " +
@@ -43,18 +43,6 @@ class Handler extends DefaultHandler
         push(new StackElement(node, instance));
         getProperties(node, attributes);
         node.call(peek(), true);
-    }
-
-    private void updateContent(StackElement lastElement)
-    {
-        ParserNode node = lastElement.xmlNode;
-        if (node.hasContent() && node.shouldUpdateContent())
-        {
-            Object elem = lastElement.node;
-            Reflect.setFromString(elem, "Content", node.getValueClazz(), lastElement.getContent());
-            if (node.shouldResetContent())
-                lastElement.builder.setLength(0);
-        }
     }
 
     private void getProperties(ParserNode node, Attributes attributes)
@@ -88,8 +76,7 @@ class Handler extends DefaultHandler
         StackElement element = getLastElement();
         Object last = element.node;
         ParserNode lastNode = element.xmlNode;
-        if (lastNode.hasContent())
-            Reflect.setFromString(last, "Content", lastNode.getValueClazz(), getLastElement().getContent());
+        element.setContent(false);
         pop();
 
 
@@ -141,6 +128,16 @@ class Handler extends DefaultHandler
         {
             assert builder != null;
             return builder.toString();
+        }
+
+        public void setContent(boolean update)
+        {
+            if (builder != null)
+            {
+                xmlNode.setContent(node, builder.toString(), update);
+                if (xmlNode.shouldResetContent())
+                    builder.setLength(0);
+            }
         }
     }
 }

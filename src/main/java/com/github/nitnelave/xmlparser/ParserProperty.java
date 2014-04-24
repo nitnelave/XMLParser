@@ -1,5 +1,7 @@
 package com.github.nitnelave.xmlparser;
 
+import org.xml.sax.SAXException;
+
 /**
  * @author nitnelave
  */

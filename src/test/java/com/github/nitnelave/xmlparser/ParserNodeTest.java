@@ -118,8 +118,7 @@ public class ParserNodeTest
         } catch (XMLStructureException e)
         {
             Assert.assertEquals("Wrong error message: ",
-                                "XMLNode TestContentNoSetter is missing the method " +
-                                "setContent(TestContentNoSetter)",
+                                "XMLNode: TestContentNoSetter is missing setter setContent(TestContentNoSetter)",
                                 e.getMessage()
                                );
         }

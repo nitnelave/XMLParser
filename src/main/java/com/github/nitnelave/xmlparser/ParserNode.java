@@ -1,5 +1,7 @@
 package com.github.nitnelave.xmlparser;
 
+import org.xml.sax.SAXException;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -23,6 +25,7 @@ class ParserNode
     private final Collection<NodeHandler> handlerList = new ArrayList<>();
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private Collection<NodeHandler> beginHandlers = new ArrayList<>();
+    private final StringSetter setter;
 
     public ParserNode(XMLParser xmlParser, Class<?> clazz)
     throws XMLStructureException
@@ -47,18 +50,7 @@ class ParserNode
             throw new XMLStructureException(name + ": Trying to register a root node with a parent node");
         if (type == XMLNodeType.DEFAULT && hasParent())
             throw new XMLStructureException(name + ": Trying to register a default node with a parent node");
-        if (hasContent)
-        {
-            if (!Reflect.hasConstructor(valueClazz, String.class))
-                throw new XMLStructureException("XMLNode " + name + ": content type "
-                                                + valueClazz.getSimpleName()
-                                                + " must implement constructor "
-                                                + valueClazz.getSimpleName() + "(String)");
-            if (!Reflect.hasMethod(clazz, "setContent", valueClazz))
-                throw new XMLStructureException("XMLNode " + name +
-                                                " is missing the method setContent("
-                                                + valueClazz.getSimpleName() + ')');
-        }
+        setter = hasContent ? new StringSetter(clazz, "Content", valueClazz) : null;
         if (type == XMLNodeType.DEFAULT)
             xmlParser.setDefaultNode(this);
         constructProperties();
@@ -164,6 +156,15 @@ class ParserNode
     public boolean isDefault()
     {
         return type == XMLNodeType.DEFAULT;
+    }
+
+    public void setContent(Object target, String content, boolean update)
+    {
+        if (!hasContent())
+            return;
+        if (update && !shouldUpdateContent())
+            return;
+        setter.set(target, content);
     }
 
     private class NodeHandler
