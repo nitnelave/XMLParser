@@ -1,10 +1,12 @@
 package com.github.nitnelave.xmlparser;
 
 import org.reflections.Reflections;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -100,6 +102,59 @@ public class XMLParser
         PARSER_FACTORY.newSAXParser().parse(in, new Handler(this));
     }
 
+    /**
+     * Start parsing, taking the input from the source given.
+     *
+     * @param in
+     *         The source to read from
+     * @throws SAXException
+     *         parsing error, either from SAX (see SAX documentation) or from a problem in the parsed file structure.
+     * @throws ParserConfigurationException
+     *         see SAXParser documentation
+     * @throws IOException
+     *         if there is a IO error
+     */
+    public void parse(InputSource in)
+            throws SAXException, IOException, ParserConfigurationException
+    {
+        PARSER_FACTORY.newSAXParser().parse(in, new Handler(this));
+    }
+
+    /**
+     * Start parsing, taking the input from the file given.
+     *
+     * @param in
+     *         The file to read from
+     * @throws SAXException
+     *         parsing error, either from SAX (see SAX documentation) or from a problem in the parsed file structure.
+     * @throws ParserConfigurationException
+     *         see SAXParser documentation
+     * @throws IOException
+     *         if there is a IO error
+     */
+    public void parse(File in)
+            throws SAXException, IOException, ParserConfigurationException
+    {
+        PARSER_FACTORY.newSAXParser().parse(in, new Handler(this));
+    }
+
+    /**
+     * Start parsing, taking the input from the uri given.
+     *
+     * @param uri
+     *         The uri to read from
+     * @throws SAXException
+     *         parsing error, either from SAX (see SAX documentation) or from a problem in the parsed file structure.
+     * @throws ParserConfigurationException
+     *         see SAXParser documentation
+     * @throws IOException
+     *         if there is a IO error
+     */
+    public void parse(String uri)
+            throws SAXException, IOException, ParserConfigurationException
+    {
+        PARSER_FACTORY.newSAXParser().parse(uri, new Handler(this));
+    }
 
     protected void setDefaultNode(ParserNode defaultNode)
     throws XMLStructureException
