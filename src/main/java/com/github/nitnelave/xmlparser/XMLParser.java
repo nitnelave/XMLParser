@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * Generic XML SAX parser.
@@ -80,8 +82,7 @@ public class XMLParser
     public void registerListener(Object handler)
             throws XMLStructureException
     {
-        for (ParserNode parserNode : nodeList)
-            parserNode.addListener(handler);
+        nodeList.stream().forEach(n -> n.addListener(handler));
     }
 
     /**
@@ -166,19 +167,21 @@ public class XMLParser
         this.defaultNode = defaultNode;
     }
 
+    private ParserNode getNodeFor(Predicate<ParserNode> p)
+    {
+        Optional<ParserNode> i = nodeList.stream().filter(p).findAny();
+        if (i.isPresent())
+            return i.get();
+        return defaultNode;
+    }
+
     protected ParserNode getNode(String qName)
     {
-        for (ParserNode node : nodeList)
-            if (qName.equalsIgnoreCase(node.getName()))
-                return node;
-        return defaultNode;
+        return getNodeFor(n -> n.getName().equalsIgnoreCase(qName));
     }
 
     protected ParserNode getNodeForClass(Class<?> c)
     {
-        for (ParserNode n : nodeList)
-            if (c.equals(n.getClazz()))
-                return n;
-        return defaultNode;
+        return getNodeFor(n -> n.getClazz().equals(c));
     }
 }
