@@ -24,7 +24,7 @@ import java.lang.annotation.*;
  * This means that Person is a root node (see {@link XMLNode}), and has 2 properties:
  * <ul>
  * <li>Age, referenced by the xml key "age", that is an integer.
- * Because of the name, the method called to register the property will be setAge(Integer age).</li>
+ * Because of the name, the method called to register the property will be {@code setAge(Integer age)}.</li>
  * <li>Name, referenced by the xml key "name", a String. This property is required,
  * and an exception will be raised if it is absent.</li>
  * </ul>
@@ -41,7 +41,7 @@ public @interface XMLProperty
 {
     /**
      * The name of the property.
-     * Corresponds to the setter signature, i.e. if the name is "MaxAge" (note the CameCase),
+     * Corresponds to the setter signature, i.e. if the name is "MaxAge" (note the CamelCase),
      * the expected setter is <br />
      * <pre>public void setMaxAge(Integer age)</pre>
      *

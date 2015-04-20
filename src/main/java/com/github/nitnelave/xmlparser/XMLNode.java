@@ -31,7 +31,7 @@ import java.lang.annotation.*;
  * If a node is missing a property marked required, any corresponding XML tag missing the property
  * will raise an exception upon parsing.
  * </p>
- * <H4>Constructors</H4>
+ * <h4>Constructors</h4>
  * <ul>
  * <li>The XML nodes will be created with the empty constructor. Make sure to provide a meaningful one.</li>
  * <li>The classes for the node content and the properties must have a constructor taking a {@code String} as unique
