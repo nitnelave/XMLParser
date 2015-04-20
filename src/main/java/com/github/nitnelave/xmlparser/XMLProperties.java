@@ -19,6 +19,14 @@ import java.lang.annotation.*;
  *     public class Foo { ... }
  * </pre>
  * </p>
+ * <p>
+ * Note: since Java 8, {@link Repeatable} annotations have been introduced, allowing to write:
+ * <pre>
+ *     &#64;XMLProperty( ... )
+ *     &#64;XMLProperty( ... )
+ *     public class Foo { ... }
+ * </pre>
+ * </p>
  *
  * @author nitnelave
  * @see XMLNode

@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * Annotation to describe a single XML node property.
  * <p>
- * This annotation describes a property of the XML tag. It must be encapsulated in an XMLProperties
+ * This annotation describes a property of the XML tag. It can be repeated
  * to allow for several properties.
  * </p>
  * <p>The values of properties (see {@link #valueType()}) must implement a constructor that takes a String.
@@ -17,8 +17,8 @@ import java.lang.annotation.*;
  * could be described by the annotation:
  * <pre>
  *     &#64;XMLNode
- *     &#64;XMLProperties({&#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class),
- *                     &#64;XMLProperty(name = "Name", key = "name", valueType = String.class, required = true)})
+ *     &#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class)
+ *     &#64;XMLProperty(name = "Name", key = "name", valueType = String.class, required = true)
  *     public class Person { ... }
  * </pre>
  * This means that Person is a root node (see {@link XMLNode}), and has 2 properties:
@@ -32,11 +32,11 @@ import java.lang.annotation.*;
  *
  * @author nitnelave
  * @see XMLNode
- * @see XMLProperties
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
+@Repeatable(value = XMLProperties.class)
 public @interface XMLProperty
 {
     /**

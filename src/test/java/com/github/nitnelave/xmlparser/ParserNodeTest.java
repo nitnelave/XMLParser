@@ -289,4 +289,11 @@ public class ParserNodeTest
         Assert.assertFalse(new ParserNode(parser, TestRoot.class).shouldResetContent());
 
     }
+
+    @Test
+    public void testProperties()
+    throws XMLStructureException
+    {
+        Assert.assertEquals(2, new ParserNode(parser, TestProperties.class).getProperties().size());
+    }
 }

@@ -60,13 +60,10 @@ class ParserNode
     private void constructProperties()
     throws XMLStructureException
     {
-        XMLProperties prop = clazz.getAnnotation(XMLProperties.class);
+        XMLProperty[] prop = clazz.getAnnotationsByType(XMLProperty.class);
         if (prop != null)
-            for (XMLProperty p : prop.value())
+            for (XMLProperty p : prop)
                 registerProperty(p);
-        XMLProperty sProp = clazz.getAnnotation(XMLProperty.class);
-        if (sProp != null)
-            registerProperty(sProp);
     }
 
     private void registerProperty(XMLProperty property)

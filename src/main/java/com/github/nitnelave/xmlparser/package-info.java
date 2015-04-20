@@ -60,8 +60,8 @@
  * <pre>
  *     // Here, the "name" attribute for XMLNode is not necessary, as it is the same as the class name.
  *     &#64;XMLNode(name = "Person", type = XMLNodeType.ROOT)
- *     &#64;XMLProperties({&#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class, required = true),
- *                     &#64;XMLProperty(name = "Name", key = "name", valueType = String.class, required = true)})
+ *     &#64;XMLProperty(name = "Age", key = "age", valueType = Integer.class, required = true)
+ *     &#64;XMLProperty(name = "Name", key = "name", valueType = String.class, required = true)
  *     public class Person
  *     {
  *         Collection&lt;Child&gt; children;

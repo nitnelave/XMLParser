@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * <p>
  * Annotation to describe an XML node structure.
- * For the properties, see {@link XMLProperties}.
+ * For the properties, see {@link XMLProperty}.
  * </p>
  * There are 2 special types of nodes:
  * <ul>
@@ -41,7 +41,6 @@ import java.lang.annotation.*;
  * @author nitnelave
  * @see XMLParser
  * @see XMLProperty
- * @see XMLProperties
  * @see XMLStructureException
  */
 @Documented

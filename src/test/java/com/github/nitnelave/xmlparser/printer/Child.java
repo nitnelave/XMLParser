@@ -1,15 +1,14 @@
 package com.github.nitnelave.xmlparser.printer;
 
 import com.github.nitnelave.xmlparser.XMLNode;
-import com.github.nitnelave.xmlparser.XMLProperties;
 import com.github.nitnelave.xmlparser.XMLProperty;
 
 /**
  * @author nitnelave
  */
 @XMLNode(parentNodes = Person.class)
-@XMLProperties({@XMLProperty(name = "Id", key = "id", valueType = Integer.class, required = true),
-                @XMLProperty(name = "Age", key = "age", valueType = Integer.class)})
+@XMLProperty(name = "Id", key = "id", valueType = Integer.class, required = true)
+@XMLProperty(name = "Age", key = "age", valueType = Integer.class)
 public class Child
 {
     private Name name = null;
