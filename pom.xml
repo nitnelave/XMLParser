@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+To build: mvn compile
+To test: mvn test
+To deploy new version: mvn release:prepare release:perform
+To push the doc: mvn site scm-publish:publish-scm
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -79,7 +85,7 @@
             <configuration>
               <checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory>
               <checkinComment>Publishing javadoc for ${project.artifactId}:${project.version}</checkinComment>
-              <content>${project.reporting.outputDirectory}/apidocs</content>
+              <content>${project.reporting.outputDirectory}/../apidocs</content>
               <skipDeletedFiles>true</skipDeletedFiles>
               <pubScmUrl>scm:git:git@github.com:nitnelave/XMLParser.git</pubScmUrl>
               <scmBranch>gh-pages</scmBranch> <!-- branch with static site -->
